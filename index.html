@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Cleveland fleet &amp; staffing capacity — SupplyNow</title>
+<title>Cleveland fleet, staffing &amp; capacity — SupplyNow</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css" />
 <style>
   :root{
@@ -13,6 +13,7 @@
     --green-bg:#eaf3de; --green-tx:#27500a; --green-bd:#97c459;
     --amber-bg:#faeeda; --amber-tx:#633806; --amber-bd:#ef9f27;
     --red-bg:#fcebeb; --red-tx:#791f1f; --red-bd:#f09595;
+    --purp-bg:#eeedfe; --purp-tx:#26215c; --purp-bd:#afa9ec;
     --gray-bg:#f1efe8; --gray-tx:#444441;
     --radius:8px;
   }
@@ -23,42 +24,47 @@
       --green-bg:#1f3f13;--green-tx:#c0dd97;--green-bd:#3b6d11;
       --amber-bg:#4a2f0a;--amber-tx:#fac775;--amber-bd:#854f0b;
       --red-bg:#4a1717;--red-tx:#f7c1c1;--red-bd:#a32d2d;
+      --purp-bg:#2b2660;--purp-tx:#cecbf6;--purp-bd:#534ab7;
       --gray-bg:#2c2c28;--gray-tx:#d3d1c7;}
   }
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.5;-webkit-text-size-adjust:100%}
-  .wrap{max-width:880px;margin:0 auto;padding:20px 16px 60px}
+  .wrap{max-width:920px;margin:0 auto;padding:20px 16px 70px}
   header h1{font-size:22px;font-weight:600;margin:0 0 4px}
   header p{margin:0;color:var(--ink2);font-size:14px}
   .stamp{font-size:12px;color:var(--ink3);margin-top:6px}
-  .days{display:flex;gap:6px;margin:20px 0 14px;flex-wrap:wrap}
+  nav.jump{display:flex;gap:6px;flex-wrap:wrap;margin:16px 0 4px}
+  nav.jump a{font-size:12.5px;color:var(--blue-tx);background:var(--blue-bg);padding:5px 11px;border-radius:20px;text-decoration:none}
+  .days{display:flex;gap:6px;margin:18px 0 14px;flex-wrap:wrap}
   .day{font-size:14px;padding:7px 15px;border:1px solid var(--line2);border-radius:var(--radius);background:var(--card);color:var(--ink);cursor:pointer}
   .day.on{background:var(--blue-bg);color:var(--blue-tx);border-color:var(--blue-bd);font-weight:600}
   .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:0 0 16px}
   .kpi{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:11px 13px}
   .kpi .lab{font-size:12px;color:var(--ink2);margin:0 0 4px}
-  .kpi .val{font-size:26px;font-weight:600;line-height:1}
+  .kpi .val{font-size:24px;font-weight:600;line-height:1}
   .kpi .val.bad{color:var(--red-tx)} .kpi .val.ok{color:var(--green-tx)}
   .kpi .sub{font-size:11px;color:var(--ink3);margin-top:4px}
-  .callout{border-radius:var(--radius);padding:12px 14px;margin:0 0 16px}
+  .callout{border-radius:var(--radius);padding:12px 14px;margin:0 0 14px}
   .callout h3{margin:0 0 8px;font-size:14px;font-weight:600;display:flex;align-items:center;gap:6px}
-  .callout ul{margin:0;padding-left:18px;font-size:13.5px}
-  .callout li{margin:3px 0}
-  .c-gap{background:var(--amber-bg);border:1px solid var(--amber-bd)} .c-gap h3,.c-gap ul{color:var(--amber-tx)}
-  .c-gap li.clear{color:var(--green-tx)}
+  .callout ul{margin:0;padding-left:18px;font-size:13.5px} .callout li{margin:4px 0}
+  .c-gap{background:var(--amber-bg);border:1px solid var(--amber-bd)} .c-gap h3,.c-gap ul{color:var(--amber-tx)} .c-gap li.clear{color:var(--green-tx)}
   .c-flag{background:var(--red-bg);border:1px solid var(--red-bd)} .c-flag h3,.c-flag ul{color:var(--red-tx)}
-  h2.sec{font-size:15px;font-weight:600;margin:24px 0 10px;color:var(--ink2)}
+  .c-win{background:var(--green-bg);border:1px solid var(--green-bd)} .c-win h3,.c-win ul{color:var(--green-tx)}
+  h2.sec{font-size:17px;font-weight:600;margin:30px 0 4px;scroll-margin-top:12px}
+  h2.sec .sub{font-size:13px;color:var(--ink3);font-weight:400;margin-left:8px}
   .lane{border:1px solid var(--line);border-radius:12px;padding:13px 14px;margin:0 0 11px;background:var(--card)}
   .lane.par{background:var(--bg)}
-  .lane-hd{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 10px;flex-wrap:wrap}
+  .lane-hd{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 8px;flex-wrap:wrap}
   .lane-nm{font-size:15.5px;font-weight:600;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
   .lane-nm small{font-size:12.5px;color:var(--ink3);font-weight:400}
+  .lane-note{font-size:12px;color:var(--ink2);margin:0 0 8px}
   .badge{font-size:11px;padding:3px 9px;border-radius:20px;font-weight:600;white-space:nowrap}
   .b-time{background:var(--gray-bg);color:var(--gray-tx);border-radius:var(--radius)}
   .b-roll{background:var(--green-bg);color:var(--green-tx)}
   .b-new{background:var(--amber-bg);color:var(--amber-tx)}
   .b-par{background:var(--blue-bg);color:var(--blue-tx)}
-  .slot-row{display:flex;align-items:center;gap:8px;margin:7px 0;flex-wrap:wrap}
+  .b-dry{background:var(--purp-bg);color:var(--purp-tx)}
+  .slot-row{display:flex;align-items:center;gap:8px;margin:6px 0;flex-wrap:wrap}
   .slot-row .rl{font-size:12px;color:var(--ink2);width:64px;flex:none;display:flex;align-items:center;gap:4px}
   .slot{min-width:150px;min-height:36px;border:1.5px dashed var(--line2);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--ink3);padding:3px 8px}
   .slot.need{border-color:var(--red-bd);background:var(--red-bg);color:var(--red-tx)}
@@ -68,9 +74,8 @@
   .chip{display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;padding:6px 9px;border-radius:var(--radius);cursor:grab;user-select:none;border:1px solid transparent}
   .chip.tk{background:var(--blue-bg);color:var(--blue-tx)}
   .chip.dr{background:var(--green-bg);color:var(--green-tx)}
-  .chip.locked{opacity:.9;cursor:default}
-  .chip.armed{outline:2px solid var(--ink);outline-offset:1px}
   .chip.conf{outline:2px solid var(--red-tx);outline-offset:1px}
+  .chip.armed{outline:2px solid var(--ink);outline-offset:1px}
   .chip .x{margin-left:auto;cursor:pointer;opacity:.55;font-size:15px;line-height:1;padding:0 2px}
   .chip .x:hover{opacity:1}
   .pool{border:1px solid var(--line);border-radius:12px;padding:14px;margin:8px 0 0;background:var(--card)}
@@ -88,112 +93,113 @@
   .chip .tagx{margin-left:6px;font-size:10px;opacity:.8}
   .toolbar{display:flex;gap:8px;margin:16px 0 0;flex-wrap:wrap}
   .btn{font-size:13px;padding:8px 14px;border:1px solid var(--line2);border-radius:var(--radius);background:var(--card);color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:6px}
-  .btn:hover{background:var(--bg)}
-  .btn.pri{background:var(--ink);color:var(--bg);border-color:var(--ink)}
-  .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--ink2);margin:0 0 14px}
-  .legend span{display:flex;align-items:center;gap:6px}
-  .sw{width:12px;height:12px;border-radius:3px;display:inline-block}
-  .cost{border:1px solid var(--line);border-radius:12px;padding:16px;background:var(--card);margin-top:12px}
-  .cost-in{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:6px 0 16px}
+  .btn:hover{background:var(--bg)} .btn.pri{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+  table.t{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  table.t th,table.t td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  table.t th{color:var(--ink2);font-weight:600;font-size:11.5px;text-transform:uppercase;letter-spacing:.03em;background:var(--bg)}
+  table.t td.n{text-align:right;font-variant-numeric:tabular-nums}
+  table.t tr:last-child td{border-bottom:none}
+  .pill{font-size:11px;padding:2px 8px;border-radius:20px;font-weight:600;display:inline-block}
+  .p-snap{background:var(--blue-bg);color:var(--blue-tx)} .p-rd{background:var(--amber-bg);color:var(--amber-tx)}
+  .p-cfh{background:var(--purp-bg);color:var(--purp-tx)} .p-akr{background:var(--green-bg);color:var(--green-tx)}
+  .p-part{background:var(--gray-bg);color:var(--gray-tx)}
+  .free{font-weight:600;color:var(--green-tx)}
+  .cost{border:1px solid var(--line);border-radius:12px;padding:16px;background:var(--card);margin-top:8px}
+  .cost-in{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:6px 0 16px}
   .cost-in label{font-size:12px;color:var(--ink2);display:block;margin-bottom:4px}
   .cost-in input{width:100%;font-size:14px;padding:7px 9px;border:1px solid var(--line2);border-radius:var(--radius);background:var(--bg);color:var(--ink)}
-  table.ct{width:100%;border-collapse:collapse;font-size:13.5px}
-  table.ct th,table.ct td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line)}
-  table.ct th{color:var(--ink2);font-weight:600;font-size:12px}
-  table.ct td.n{text-align:right;font-variant-numeric:tabular-nums}
-  table.ct tr.tot td{font-weight:600;border-bottom:none;border-top:2px solid var(--line2)}
-  .note{font-size:12px;color:var(--ink3);margin-top:18px;line-height:1.6}
-  .note b{color:var(--ink2);font-weight:600}
+  tr.tot td{font-weight:600;border-top:2px solid var(--line2)!important}
+  .scen{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-top:8px}
+  .scard{border:1px solid var(--line);border-radius:12px;padding:13px 14px;background:var(--card)}
+  .scard h4{margin:0 0 6px;font-size:14px;font-weight:600;display:flex;align-items:center;gap:6px}
+  .scard p{margin:0;font-size:12.5px;color:var(--ink2)}
+  .note{font-size:12px;color:var(--ink3);margin-top:14px;line-height:1.6} .note b{color:var(--ink2);font-weight:600}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <h1>Cleveland fleet &amp; staffing capacity</h1>
-    <p>Ops planning — which customers we service, and the vehicles &amp; people to cover them.</p>
-    <div class="stamp">SupplyNow · working draft · live data from Fleet + Employees bases · drag or tap to move pieces</div>
+    <h1>Cleveland fleet, staffing &amp; capacity</h1>
+    <p>Ops planning board + capacity fact-find — customers, vehicles, people, and where the free hours are.</p>
+    <div class="stamp">SupplyNow · working draft · updated from call decisions · fleet/driver data live from Airtable · route capacity from May 4–15 2026 Routific export</div>
   </header>
 
-  <div class="days" id="days"></div>
+  <nav class="jump">
+    <a href="#board">Service board</a><a href="#roster">Fleet roster</a><a href="#cap">Driver capacity</a>
+    <a href="#cost">Cost &amp; profit</a><a href="#scen">Scenarios</a><a href="#flags">Flags</a>
+  </nav>
 
-  <div class="legend">
-    <span><span class="sw" style="background:var(--blue-bd)"></span>truck / vehicle</span>
-    <span><span class="sw" style="background:var(--green-bd)"></span>driver / person</span>
-    <span><span class="sw" style="background:var(--red-bd)"></span>open need</span>
-    <span><span class="sw" style="background:var(--amber-bd)"></span>inbound</span>
-    <span><span class="sw" style="background:var(--green-bg)"></span>rolls over from SNAP</span>
-  </div>
-
-  <div class="kpis">
-    <div class="kpi"><p class="lab">Peak trucks at once</p><p class="val" id="k-peak">–</p><p class="sub" id="k-peakw"></p></div>
-    <div class="kpi"><p class="lab">Trucks in play</p><p class="val" id="k-trucks">–</p><p class="sub">own fleet, after returns</p></div>
-    <div class="kpi"><p class="lab">Open slots</p><p class="val" id="k-open">–</p><p class="sub">trucks · drivers</p></div>
-    <div class="kpi"><p class="lab">Cost to close gaps</p><p class="val" id="k-cost">–</p><p class="sub">per month · editable below</p></div>
-  </div>
-
-  <div class="callout c-gap">
-    <h3><i class="ti ti-alert-triangle"></i> Gaps to solve — for the selected day</h3>
-    <ul id="gaplist"></ul>
-  </div>
-
-  <div class="callout c-flag">
-    <h3><i class="ti ti-flag"></i> Data flags — reconcile before committing</h3>
+  <div class="callout c-win">
+    <h3><i class="ti ti-checkbox"></i> Decisions from the call</h3>
     <ul>
-      <li><b>26ft “Fleet #128” is not in the Fleet base.</b> No 26ft and no asset 128 in the Cleveland records — enter it or confirm where it lives.</li>
-      <li><b>Base shows 3 Penske 16ft</b> (#2003, #2004, #2005 — #2005 is a new 2026 unit), not 2. Which one is with the service partner?</li>
-      <li><b>#2001 (Fleet One) is logged as 20ft</b>, not 16ft — mislabeled, or is it the unit going back?</li>
-      <li><b>Owned #1003 (16ft) sits in Cleveland “In Use”</b> — if it’s actually free, it covers the Monday / Akron truck gap. #1007 is Out of Service.</li>
+      <li><b>CFH — no more John Poppas service/staff.</b> New play: SNAP off-route drivers park reefers at the <b>Hildebrand building</b>, jump into John’s <b>2 Dodge ProMaster City (dry) vans</b>, and run CFH Cleveland from 9:30a–12.</li>
+      <li><b>Fleet One:</b> we keep our 16ft reefer <i>and</i> take on the 26ft reefer → <b>+1 vehicle</b> for Cleveland.</li>
+      <li><b>Benz Sprinter</b> (International Mercedes-Benz, reefer van) staged at RD Cleveland → <b>Christine</b> runs Akron selection Mon/Wed; <b>Shameria</b> runs Akron delivery + selection Tue/Thu → <b>Akron covered Mon–Thu</b>.</li>
+      <li><b>#2006</b> (new 26ft International) → <b>Pete</b> for SNAP, which frees <b>#2002</b> (kept 16ft) for a <b>part-time driver</b>: partial SNAP Mon + RD Cleveland 9–12 Tue–Fri (~30 hrs/wk).</li>
+      <li>With Christine in Akron Mon/Wed, Cleveland (Valley View) selection drops to <b>one selector — Julio</b> those days.</li>
     </ul>
   </div>
 
-  <h2 class="sec">Service windows</h2>
+  <h2 class="sec" id="board">Service windows <span class="sub">tap a chip then a slot, or drag — a unit can serve two windows that don’t overlap</span></h2>
+  <div class="days" id="days"></div>
+  <div class="kpis">
+    <div class="kpi"><p class="lab">Peak trucks at once</p><p class="val" id="k-peak">–</p><p class="sub" id="k-peakw"></p></div>
+    <div class="kpi"><p class="lab">Trucks in play</p><p class="val" id="k-trucks">–</p><p class="sub">own + kept, ex-partner</p></div>
+    <div class="kpi"><p class="lab">Open slots</p><p class="val" id="k-open">–</p><p class="sub">trucks · drivers</p></div>
+    <div class="kpi"><p class="lab">Cost to close gaps</p><p class="val" id="k-cost">–</p><p class="sub">per month · editable</p></div>
+  </div>
+  <div class="callout c-gap"><h3><i class="ti ti-alert-triangle"></i> Gaps &amp; watch-items — selected day</h3><ul id="gaplist"></ul></div>
   <div id="lanes"></div>
 
   <div class="pool">
     <h4>Resource pool</h4>
-    <p class="hint">Tap a chip then tap a slot — or drag it. A unit can serve two windows if their times don’t overlap (the SNAP → Chefs / RD-front roll-over). Names are live from the Fleet &amp; Employees bases.</p>
+    <p class="hint">Loaded with the plan from the call. Names/assets are live from the Fleet &amp; Employees bases. Drag to test alternatives.</p>
     <div class="pcol">
-      <div>
-        <div class="colhd"><i class="ti ti-truck"></i> Trucks — in play</div>
-        <div class="pchips col" id="pool-tk"></div>
-      </div>
-      <div>
-        <div class="colhd"><i class="ti ti-user"></i> Drivers — active Cleveland</div>
-        <div class="pchips col" id="pool-dr"></div>
-      </div>
+      <div><div class="colhd"><i class="ti ti-truck"></i> Vehicles — in play</div><div class="pchips col" id="pool-tk"></div></div>
+      <div><div class="colhd"><i class="ti ti-user"></i> People</div><div class="pchips col" id="pool-dr"></div></div>
     </div>
-    <div class="strip">
-      <div class="colhd"><i class="ti ti-plane-arrival"></i> Inbound / not yet counted — drag in to test</div>
-      <div class="pchips" id="pool-inb"></div>
-    </div>
-    <div class="strip">
-      <div class="colhd"><i class="ti ti-ban"></i> Out of the account</div>
-      <div class="pchips" id="pool-out"></div>
-    </div>
-    <div class="strip">
-      <div class="colhd"><i class="ti ti-user-pause"></i> Bench — inactive drivers to reactivate</div>
-      <div class="pchips" id="pool-bench"></div>
-    </div>
-    <div class="toolbar">
-      <button class="btn pri" onclick="autoFit()"><i class="ti ti-wand"></i> Auto-fit</button>
-      <button class="btn" onclick="clearAll()"><i class="ti ti-eraser"></i> Clear</button>
-    </div>
+    <div class="strip"><div class="colhd"><i class="ti ti-plane-arrival"></i> Borrowed / inbound — drag in to test</div><div class="pchips" id="pool-inb"></div></div>
+    <div class="strip"><div class="colhd"><i class="ti ti-ban"></i> Out of the account</div><div class="pchips" id="pool-out"></div></div>
+    <div class="toolbar"><button class="btn pri" onclick="loadPlan()"><i class="ti ti-wand"></i> Reset to call plan</button><button class="btn" onclick="clearAll()"><i class="ti ti-eraser"></i> Clear</button></div>
   </div>
 
-  <h2 class="sec">Cost to close the gaps</h2>
+  <h2 class="sec" id="roster">Fleet roster <span class="sub">asset → driver → project</span></h2>
+  <table class="t"><thead><tr><th>Asset</th><th>Type</th><th>Source</th><th>Driver</th><th>Project</th><th>Notes</th></tr></thead><tbody id="roster-b"></tbody></table>
+
+  <h2 class="sec" id="cap">Driver capacity — May actuals <span class="sub">2 weeks, Cleveland market · where the free hours are</span></h2>
+  <table class="t"><thead><tr><th>Driver</th><th>Truck</th><th>Project</th><th class="n">Start</th><th class="n">End</th><th class="n">Span</th><th class="n">Stops/day</th><th class="n">Mi/day</th><th>Free bandwidth</th></tr></thead><tbody id="cap-b"></tbody></table>
+  <p class="note" id="cap-note"></p>
+
+  <h2 class="sec" id="cost">Cost to close the gaps</h2>
   <div class="cost">
     <div class="cost-in">
-      <div><label>Truck $/day (lease/acquire)</label><input type="number" id="c-truck" value="75" min="0" step="5"></div>
+      <div><label>Truck $/day</label><input type="number" id="c-truck" value="75" min="0" step="5"></div>
       <div><label>Driver $/hour (loaded)</label><input type="number" id="c-drv" value="22" min="0" step="1"></div>
-      <div><label>SNAP route hrs/day</label><input type="number" id="c-snaph" value="4.5" min="0" step="0.5"></div>
+      <div><label>Part-time driver hrs/wk</label><input type="number" id="c-pt" value="30" min="0" step="1"></div>
       <div><label>Akron delivery hrs/day</label><input type="number" id="c-akh" value="4" min="0" step="0.5"></div>
-      <div><label>Routed-hour rate $ (revenue ref)</label><input type="number" id="c-rate" value="86" min="0" step="1"></div>
+      <div><label>Routed-hour rate $ (rev ref)</label><input type="number" id="c-rate" value="86" min="0" step="1"></div>
     </div>
-    <table class="ct">
-      <thead><tr><th>Gap</th><th>Days/wk</th><th class="n">Cost / week</th><th class="n">Cost / month</th><th class="n">Routed-hr value/mo</th></tr></thead>
-      <tbody id="cost-rows"></tbody>
-    </table>
+    <table class="t"><thead><tr><th>Line</th><th class="n">Days/wk</th><th class="n">Cost/wk</th><th class="n">Cost/mo</th><th class="n">Routed-hr value/mo</th></tr></thead><tbody id="cost-b"></tbody></table>
     <p class="note" id="cost-note"></p>
+  </div>
+
+  <h2 class="sec" id="scen">Scenarios &amp; open fact-finds <span class="sub">the 8-week search for the next forever customer</span></h2>
+  <div class="scen">
+    <div class="scard"><h4><i class="ti ti-clock-hour-9"></i> Off-hours availability</h4><p>Freed capacity sits mostly <b>midday onward</b>: Vince after ~11:28a, Shameria after ~11:44a, plus the part-time #2002 seat. That’s the window to pitch a new anchor customer — afternoon/early-evening delivery.</p></div>
+    <div class="scard"><h4><i class="ti ti-heart-broken"></i> If we exit CFH</h4><p>Dropping CFH returns the 9:30–12 block on SNAP drivers and removes the John-van dependency — clean midday capacity for a single larger account instead of stitched projects.</p></div>
+    <div class="scard"><h4><i class="ti ti-package"></i> 26ft on freight</h4><p>#2006 (26ft) can flex to <b>freight transfer / load-board</b> work on light days — a revenue floor while we hunt the forever customer.</p></div>
+    <div class="scard"><h4><i class="ti ti-building-store"></i> Per-location capacity <span style="font-weight:400;color:var(--ink3)">(next)</span></h4><p>Restaurant-by-restaurant view — sales, order counts, stop potential — needs the RD order log. Say go and I’ll pull it into a matching board.</p></div>
+  </div>
+
+  <h2 class="sec" id="flags">Flags — reconcile before locking</h2>
+  <div class="callout c-flag"><h3><i class="ti ti-flag"></i> What the data doesn’t back up yet</h3>
+    <ul>
+      <li><b>“SNAP done by 9:00” isn’t in the routing.</b> May spans ran to ~11:28a (Vince) and ~1:38p (Pete). The 9:30 Hildebrand hand-off to CFH needs SNAP re-sequenced to finish earlier, or a different driver takes CFH.</li>
+      <li><b>Two 26-footers?</b> The Fleet One “26ft reefer we take on” vs <b>#2006</b> (26ft International box for Pete) — same unit or two? And which unit is the “16ft reefer we keep”?</li>
+      <li><b>#2006 lease asset # is unknown</b> and it’s <b>not taken on yet</b> (marked commissioned). Pete’s SNAP move + freeing #2002 depend on it landing.</li>
+      <li><b>John’s ProMaster vans are DRY</b>, not refrigerated — CFH cold-chain rides on getting reefers back to Hildebrand by 12, or the driver ubers back.</li>
+      <li><b>Friday Akron</b> isn’t covered by the Mon–Thu plan. <b>Meal Count</b> was empty in the export, so per-stop volume isn’t modeled yet.</li>
+    </ul>
   </div>
 
   <p class="note" id="notes"></p>
@@ -201,39 +207,43 @@
 
 <script>
 const CHIPS=[
-  {id:'t2004',kind:'tk',label:'#2004',sub:'Penske 16ft'},
-  {id:'t2002',kind:'tk',label:'#2002',sub:'Fleet One 16ft'},
-  {id:'t2005',kind:'tk',label:'#2005',sub:'Penske 16ft · new ’26'},
-  {id:'t1003',kind:'tk',label:'#1003',sub:'owned 16ft · confirm free'},
-  {id:'dvince',kind:'dr',label:'Montemarano',sub:'SNAP/CFH'},
-  {id:'dmanuel',kind:'dr',label:'Maldonado',sub:'SNAP/CFH'},
-  {id:'dmorris',kind:'dr',label:'Morris',sub:'SNAP/RD'},
-  {id:'dpuskar',kind:'dr',label:'Puskar',sub:'RD'},
-  {id:'djones',kind:'dr',label:'Jones',sub:'selector'},
-  {id:'dopen1',kind:'dr',label:'Open driver A',sub:'hire/reactivate'},
-  {id:'dopen2',kind:'dr',label:'Open driver B',sub:'hire/reactivate'},
+  {id:'t2001',kind:'tk',label:'#2001',sub:'20ft reefer'},
+  {id:'t2002',kind:'tk',label:'#2002',sub:'16ft · extra'},
+  {id:'t2004',kind:'tk',label:'#2004',sub:'16ft Penske'},
+  {id:'t2006',kind:'tk',label:'#2006',sub:'26ft new'},
+  {id:'benz',kind:'tk',label:'Benz Sprinter',sub:'reefer van'},
+  {id:'dvince',kind:'dr',label:'Vince',sub:'SNAP'},
+  {id:'dpete',kind:'dr',label:'Pete',sub:'SNAP'},
+  {id:'dsham',kind:'dr',label:'Shameria',sub:'SNAP/Akron'},
+  {id:'dchris',kind:'dr',label:'Christine',sub:'Akron sel'},
+  {id:'djulio',kind:'dr',label:'Julio',sub:'Cle selector'},
+  {id:'dpt',kind:'dr',label:'Part-time driver',sub:'#2002 · 30h'},
 ];
 const INBOUND=[
-  {id:'t128',kind:'tk',label:'26ft · Fleet #128',sub:'not in base yet'},
-  {id:'tintl',kind:'tk',label:'International',sub:'box'},
-  {id:'tvan',kind:'tk',label:'Sprinter',sub:'reefer'},
+  {id:'john1',kind:'tk',label:'John van 1',sub:'ProMaster · dry'},
+  {id:'john2',kind:'tk',label:'John van 2',sub:'ProMaster · dry'},
 ];
 const OUT=[
-  {label:'#2003',tag:'Penske 16ft · service partner'},
-  {label:'#2001',tag:'Fleet One 20ft · returning'},
-  {label:'#1007',tag:'owned 16ft · out of service'},
+  {label:'#2005 · Anderson',tag:'16ft Penske · service partner (RD back leg)'},
+  {label:'John Poppas staff',tag:'direct service ended'},
 ];
-const BENCH=['Peters · SNAP','Curry · SNAP/RD','M. Bailey · RD/SNAP','Myers · SNAP/RD'];
 const POOL=[...CHIPS,...INBOUND];
 const byId=id=>POOL.find(c=>c.id===id);
 
 const LANES=[
-  {id:'snap',nm:'SNAP',sub:'anchor · 3 routes',time:'4:30–9:00a',s:4.5,e:9,tk:3,dr:3,monTk:4,monDr:4,monTag:'Mon +1 route (half cap)'},
-  {id:'rdf',nm:'RD Cleveland — front leg',time:'9:00a–12:00p',s:9,e:12,tk:1,dr:1,roll:true},
-  {id:'chef',nm:'Chefs for Hire',time:'10:30a–12:30p',s:10.5,e:12.5,tk:2,dr:2,roll:true},
-  {id:'rdb',nm:'RD Cleveland — back leg',time:'12:00–4:00p',s:12,e:16,partner:true},
-  {id:'aksel',nm:'RD Akron — selection',time:'all day · Mon–Fri',s:6,e:16,tk:0,dr:1},
-  {id:'akdel',nm:'RD Akron — delivery',time:'afternoon · Mon–Fri',s:12,e:16,tk:1,dr:1,coveredDays:['Tue','Thu'],coverNote:'covered — SNAP driver (Tue/Thu) + freed truck'},
+  {id:'snap',nm:'SNAP',sub:'anchor · 3 routes',time:'from 4:30a',s:4.5,e:11.5,tk:3,dr:3,monTk:4,monDr:4,monTag:'Mon +1 partial route (#2002)',
+   note:'Core routes: Vince #2001, Shameria #2004, Pete #2006. May actual spans run to ~11:28a–1:38p — not 9:00a.'},
+  {id:'cfh',nm:'CFH Cleveland',time:'9:30a–12:00p',s:9.5,e:12,tk:2,dr:2,dry:true,roll:true,
+   note:'SNAP off-route drivers park reefers at Hildebrand, run John’s 2 dry ProMaster vans. Reefers must be back by 12 to reload.'},
+  {id:'rdf',nm:'RD Cleveland — front leg',time:'9:00a–12:00p',s:9,e:12,tk:1,dr:1,
+   note:'Part-time driver on #2002, Tue–Fri (partial SNAP on Mon).'},
+  {id:'rdb',nm:'RD Cleveland — back leg',time:'12:00–4:00p',s:12,e:16,partner:true,
+   note:'#2005 · Anderson — service partner, subcontracted.'},
+  {id:'akron',nm:'RD Akron — selection + delivery',time:'Mon–Thu',s:9.5,e:16,tk:1,dr:1,
+   coveredNote:{Mon:'Christine — selection (Benz Sprinter)',Wed:'Christine — selection (Benz Sprinter)',Tue:'Shameria — delivery + selection',Thu:'Shameria — delivery + selection'},
+   note:'Benz Sprinter staged at RD Cleveland. Friday not yet covered.'},
+  {id:'clesel',nm:'Cleveland selection — Valley View',time:'Mon–Fri',s:6,e:12,tk:0,dr:1,thinDays:['Mon','Wed'],
+   note:'Julio holds it; Mon/Wed drop to one selector while Christine is in Akron.'},
 ];
 const DAYS=['Mon','Tue','Wed','Thu','Fri'];
 let day='Mon';
@@ -242,8 +252,7 @@ let armed=null;
 
 const tkN=l=>day==='Mon'&&l.monTk?l.monTk:(l.tk||0);
 const drN=l=>day==='Mon'&&l.monDr?l.monDr:(l.dr||0);
-const laneOn=l=>!l.days||l.days.includes(day);
-const covered=l=>l.coveredDays&&l.coveredDays.includes(day);
+const covered=l=>l.coveredNote&&l.coveredNote[day];
 const slotsFor=id=>Object.keys(assign).filter(k=>assign[k]===id);
 const laneOfSlot=sid=>LANES.find(l=>sid.startsWith(l.id+'-'));
 const overlap=(a,b)=>a.s<b.e&&b.s<a.e;
@@ -256,57 +265,46 @@ function setDay(x){day=x;armed=null;renderAll();}
 
 function slotHTML(sid,kind){const cid=assign[sid];
   if(cid){const c=byId(cid);const conf=conflictsFor(cid).has(sid);
-    return `<div class="slot full" data-sid="${sid}" data-kind="${kind}">
-      <div class="chip ${kind} ${conf?'conf':''}"><i class="ti ti-${kind==='tk'?'truck':'user'}"></i>${c.label}
-      <span class="x" onclick="unassign(event,'${sid}')">&times;</span></div></div>`;}
+    return `<div class="slot full" data-sid="${sid}" data-kind="${kind}"><div class="chip ${kind} ${conf?'conf':''}"><i class="ti ti-${kind==='tk'?'truck':'user'}"></i>${c.label}<span class="x" onclick="unassign(event,'${sid}')">&times;</span></div></div>`;}
   return `<div class="slot need" data-sid="${sid}" data-kind="${kind}" onclick="placeArmed('${sid}','${kind}')">need ${kind==='tk'?'truck':'driver'}</div>`;}
 
 function renderLanes(){
-  document.getElementById('lanes').innerHTML=LANES.filter(laneOn).map(l=>{
+  document.getElementById('lanes').innerHTML=LANES.map(l=>{
     let bd=`<span class="badge b-time">${l.time}</span>`;
     if(l.roll)bd+=' <span class="badge b-roll">roll-over</span>';
+    if(l.dry)bd+=' <span class="badge b-dry">dry vans</span>';
     if(l.partner)bd+=' <span class="badge b-par">service partner</span>';
     if(l.id==='snap'&&day==='Mon')bd+=` <span class="badge b-new">${l.monTag}</span>`;
     let body='';
-    if(l.partner){body=`<div style="font-size:13px;color:var(--ink2)">Partner brings own truck &amp; driver — not counted against our fleet.</div>`;}
-    else if(covered(l)){body=`<div class="slot-row"><span class="rl"></span><div class="chip dr locked" style="max-width:320px"><i class="ti ti-circle-check"></i>${l.coverNote}</div></div>`;}
+    if(l.partner){body=`<div style="font-size:13px;color:var(--ink2)">Partner truck + driver — not counted against our fleet.</div>`;}
+    else if(covered(l)){body=`<div class="slot-row"><span class="rl"></span><div class="chip dr" style="max-width:340px"><i class="ti ti-circle-check"></i>${l.coveredNote[day]}</div></div>`;}
+    else if(l.id==='akron'){body=`<div class="slot-row"><span class="rl"></span><div class="slot need" style="min-width:200px">Friday — not covered</div></div>`;}
     else{
       const tks=Array.from({length:tkN(l)},(_,i)=>slotHTML(`${l.id}-t-${i}`,'tk')).join('');
       const drs=Array.from({length:drN(l)},(_,i)=>slotHTML(`${l.id}-d-${i}`,'dr')).join('');
-      body=(tkN(l)?`<div class="slot-row"><span class="rl"><i class="ti ti-truck"></i>Trucks</span>${tks}</div>`:'')
-          +(drN(l)?`<div class="slot-row"><span class="rl"><i class="ti ti-user"></i>Drivers</span>${drs}</div>`:'');
+      body=(tkN(l)?`<div class="slot-row"><span class="rl"><i class="ti ti-truck"></i>Vehicles</span>${tks}</div>`:'')
+          +(drN(l)?`<div class="slot-row"><span class="rl"><i class="ti ti-user"></i>${l.tk?'Drivers':'Selector'}</span>${drs}</div>`:'');
     }
-    return `<div class="lane ${l.partner?'par':''}">
-      <div class="lane-hd"><span class="lane-nm">${l.nm}${l.sub?` <small>${l.sub}</small>`:''}</span><span>${bd}</span></div>
-      ${body}</div>`;
+    return `<div class="lane ${l.partner?'par':''}"><div class="lane-hd"><span class="lane-nm">${l.nm}${l.sub?` <small>${l.sub}</small>`:''}</span><span>${bd}</span></div>${l.note?`<div class="lane-note">${l.note}</div>`:''}${body}</div>`;
   }).join('');
   wireDrop();
 }
 
-function chipHTML(c){const used=slotsFor(c.id).length;const cls=c.inbound?'inb':c.kind;
-  return `<div class="chip ${cls} ${armed===c.id?'armed':''}" data-cid="${c.id}" draggable="true" onclick="arm('${c.id}')">
-    <i class="ti ti-${c.kind==='tk'?'truck':'user'}"></i>${c.label}${c.sub?` · ${c.sub}`:''}
-    ${used?`<span style="margin-left:auto;font-size:10px;opacity:.7">×${used}</span>`:''}</div>`;}
-
+function chipHTML(c,inbound){const used=slotsFor(c.id).length;const cls=inbound?'inb':c.kind;
+  return `<div class="chip ${cls} ${armed===c.id?'armed':''}" data-cid="${c.id}" draggable="true" onclick="arm('${c.id}')"><i class="ti ti-${c.kind==='tk'?'truck':'user'}"></i>${c.label}${c.sub?` · ${c.sub}`:''}${used?`<span style="margin-left:auto;font-size:10px;opacity:.7">×${used}</span>`:''}</div>`;}
 function renderPool(){
-  document.getElementById('pool-tk').innerHTML=CHIPS.filter(c=>c.kind==='tk').map(chipHTML).join('');
-  document.getElementById('pool-dr').innerHTML=CHIPS.filter(c=>c.kind==='dr').map(chipHTML).join('');
-  document.getElementById('pool-inb').innerHTML=INBOUND.map(c=>chipHTML({...c,inbound:true})).join('');
-  document.getElementById('pool-out').innerHTML=OUT.map(o=>
-    `<div class="chip dim"><i class="ti ti-ban"></i>${o.label}<span class="tagx">${o.tag}</span></div>`).join('');
-  document.getElementById('pool-bench').innerHTML=BENCH.map(b=>
-    `<div class="chip dim"><i class="ti ti-user"></i>${b}</div>`).join('');
+  document.getElementById('pool-tk').innerHTML=CHIPS.filter(c=>c.kind==='tk').map(c=>chipHTML(c)).join('');
+  document.getElementById('pool-dr').innerHTML=CHIPS.filter(c=>c.kind==='dr').map(c=>chipHTML(c)).join('');
+  document.getElementById('pool-inb').innerHTML=INBOUND.map(c=>chipHTML(c,true)).join('');
+  document.getElementById('pool-out').innerHTML=OUT.map(o=>`<div class="chip dim"><i class="ti ti-ban"></i>${o.label}<span class="tagx">${o.tag}</span></div>`).join('');
   wireDrag();
 }
-
 let dragCid=null;
-function wireDrag(){document.querySelectorAll('.chip[draggable]').forEach(ch=>{
-  ch.ondragstart=e=>{dragCid=ch.dataset.cid;e.dataTransfer.effectAllowed='copy';e.dataTransfer.setData('text',dragCid);};});}
+function wireDrag(){document.querySelectorAll('.chip[draggable]').forEach(ch=>{ch.ondragstart=e=>{dragCid=ch.dataset.cid;e.dataTransfer.effectAllowed='copy';e.dataTransfer.setData('text',dragCid);};});}
 function wireDrop(){document.querySelectorAll('.slot').forEach(s=>{
   s.ondragover=e=>{const c=byId(dragCid);if(c&&c.kind===s.dataset.kind){e.preventDefault();s.classList.add('over');}};
   s.ondragleave=()=>s.classList.remove('over');
-  s.ondrop=e=>{e.preventDefault();s.classList.remove('over');const c=byId(dragCid);
-    if(c&&c.kind===s.dataset.kind){assign[s.dataset.sid]=dragCid;renderAll();}};});}
+  s.ondrop=e=>{e.preventDefault();s.classList.remove('over');const c=byId(dragCid);if(c&&c.kind===s.dataset.kind){assign[s.dataset.sid]=dragCid;renderAll();}};});}
 function arm(cid){armed=armed===cid?null:cid;renderPool();}
 function placeArmed(sid,kind){if(armed&&byId(armed).kind===kind){assign[sid]=armed;armed=null;renderAll();}}
 function unassign(e,sid){e.stopPropagation();delete assign[sid];renderAll();}
@@ -314,77 +312,80 @@ function clearAll(){Object.keys(assign).forEach(k=>delete assign[k]);armed=null;
 
 function recompute(){
   const shifts=[];
-  LANES.filter(l=>laneOn(l)&&!l.partner&&!covered(l)&&tkN(l)>0).forEach(l=>shifts.push({s:l.s,e:l.e,n:tkN(l)}));
+  LANES.filter(l=>!l.partner&&!covered(l)&&tkN(l)>0).forEach(l=>shifts.push({s:l.s,e:l.e,n:tkN(l)}));
   const pts=[...new Set(shifts.flatMap(x=>[x.s,x.e]))].sort((a,b)=>a-b);
   let peak=0,at=0;
-  for(let i=0;i<pts.length-1;i++){const m=(pts[i]+pts[i+1])/2;
-    const c=shifts.filter(x=>x.s<=m&&m<x.e).reduce((a,x)=>a+x.n,0);if(c>peak){peak=c;at=pts[i];}}
+  for(let i=0;i<pts.length-1;i++){const m=(pts[i]+pts[i+1])/2;const c=shifts.filter(x=>x.s<=m&&m<x.e).reduce((a,x)=>a+x.n,0);if(c>peak){peak=c;at=pts[i];}}
   const inplay=CHIPS.filter(c=>c.kind==='tk').length;
   const kp=document.getElementById('k-peak');kp.textContent=peak;kp.className='val '+(peak>inplay?'bad':'ok');
   const h=Math.floor(at),mn=(at%1)?'30':'00';document.getElementById('k-peakw').textContent=`at ${h>12?h-12:h}:${mn}${h>=12?'p':'a'}`;
   document.getElementById('k-trucks').textContent=inplay;
   let ot=0,od=0;
-  LANES.filter(l=>laneOn(l)&&!l.partner&&!covered(l)).forEach(l=>{
-    for(let i=0;i<tkN(l);i++)if(!assign[`${l.id}-t-${i}`])ot++;
-    for(let i=0;i<drN(l);i++)if(!assign[`${l.id}-d-${i}`])od++;});
+  LANES.filter(l=>!l.partner&&!covered(l)).forEach(l=>{for(let i=0;i<tkN(l);i++)if(!assign[`${l.id}-t-${i}`])ot++;for(let i=0;i<drN(l);i++)if(!assign[`${l.id}-d-${i}`])od++;});
   const ko=document.getElementById('k-open');ko.textContent=`${ot} · ${od}`;ko.className='val '+((ot+od)?'bad':'ok');
-
-  const gaps=[];
-  if(day==='Mon')gaps.push('<li><b>SNAP Monday</b> — 1 extra driver + 1 extra truck for the 4th half-cap route (4:30–9:00a). Owned #1003 could be the truck if it’s free.</li>');
-  if(['Mon','Wed','Fri'].includes(day))gaps.push(`<li><b>Akron delivery ${day}</b> — 1 vehicle + 1 driver (Tue/Thu covered by a SNAP driver).</li>`);
-  if(!gaps.length)gaps.push('<li class="clear">No standing asset gap today — SNAP frees at 9:00 and rolls into RD front leg and Chefs for Hire.</li>');
-  document.getElementById('gaplist').innerHTML=gaps.join('');
+  const g=[];
+  if(day==='Fri')g.push('<li><b>Akron Friday</b> — no coverage in the Mon–Thu plan. Assign a driver + the Benz Sprinter, or skip Fridays.</li>');
+  if(['Mon','Wed'].includes(day))g.push('<li><b>Cleveland selection thin</b> — only Julio at Valley View while Christine is in Akron.</li>');
+  g.push('<li><b>CFH cold-chain</b> — John’s vans are dry; reefers must be back at Hildebrand by 12 to reload (else Uber back).</li>');
+  if(day==='Mon')g.push('<li><b>SNAP Monday</b> — 4th partial route on #2002 (part-time driver).</li>');
+  document.getElementById('gaplist').innerHTML=g.join('');
   cost();
 }
-
 function money(n){return '$'+Math.round(n).toLocaleString();}
 function cost(){
-  const truck=+document.getElementById('c-truck').value||0;
-  const drv=+document.getElementById('c-drv').value||0;
-  const sh=+document.getElementById('c-snaph').value||0;
-  const ah=+document.getElementById('c-akh').value||0;
-  const rate=+document.getElementById('c-rate').value||0;
+  const truck=+document.getElementById('c-truck').value||0,drv=+document.getElementById('c-drv').value||0;
+  const pt=+document.getElementById('c-pt').value||0,akh=+document.getElementById('c-akh').value||0,rate=+document.getElementById('c-rate').value||0;
   const W=4.33;
   const rows=[
-    {nm:'SNAP Monday — 4th route',dpw:1,hrs:sh},
-    {nm:'Akron delivery — Mon/Wed/Fri',dpw:3,hrs:ah},
+    {nm:'Part-time driver — #2002 (partial SNAP Mon + RD Cle Tue–Fri)',dpw:5,wk:truck*5+drv*pt,hrs:pt},
+    {nm:'Akron Friday — driver + Benz (if covered)',dpw:1,wk:(drv*akh)*1,hrs:akh},
   ];
-  let totM=0;
-  const html=rows.map(r=>{
-    const perDay=truck+drv*r.hrs;
-    const wk=perDay*r.dpw, mo=wk*W, rev=r.hrs*rate*r.dpw*W;
-    totM+=mo;
-    return `<tr><td>${r.nm}</td><td>${r.dpw}</td><td class="n">${money(wk)}</td><td class="n">${money(mo)}</td><td class="n">${money(rev)}</td></tr>`;
-  }).join('');
-  const totWk=rows.reduce((a,r)=>a+(truck+drv*r.hrs)*r.dpw,0);
-  document.getElementById('cost-rows').innerHTML=html+
-    `<tr class="tot"><td>Both gaps</td><td></td><td class="n">${money(totWk)}</td><td class="n">${money(totM)}</td><td class="n"></td></tr>`;
+  let totM=0,html='';
+  rows.forEach(r=>{const mo=r.wk*W,rev=r.hrs*rate*W;totM+=mo;
+    html+=`<tr><td>${r.nm}</td><td class="n">${r.dpw}</td><td class="n">${money(r.wk)}</td><td class="n">${money(mo)}</td><td class="n">${money(rev)}</td></tr>`;});
+  html+=`<tr class="tot"><td>Incremental to run the plan</td><td class="n"></td><td class="n">${money(rows.reduce((a,r)=>a+r.wk,0))}</td><td class="n">${money(totM)}</td><td class="n"></td></tr>`;
+  document.getElementById('cost-b').innerHTML=html;
   document.getElementById('k-cost').textContent=money(totM);
-  document.getElementById('cost-note').innerHTML=
-    `<b>Read:</b> covering both gaps costs about <b>${money(totM)}/mo</b> at these inputs — a hired driver plus a leased/acquired truck. `+
-    `If you redeploy owned <b>#1003</b> (or the new <b>#2005</b>) instead of leasing, drop Truck $/day toward $0 and the number falls to mostly driver wages. `+
-    `The routed-hour column values each gap at $${rate}/hr for the revenue side of the decision.`;
+  document.getElementById('cost-note').innerHTML=`<b>Read:</b> the plan’s incremental spend is dominated by the <b>part-time #2002 seat</b> (~${money((truck*5+drv*pt)*W)}/mo at these inputs). John’s vans are borrowed (no lease line here — confirm any usage fee). Routed-hour column values the added hours at $${rate}/hr for the revenue side.`;
 }
-['c-truck','c-drv','c-snaph','c-akh','c-rate'].forEach(id=>document.getElementById(id).addEventListener('input',cost));
+['c-truck','c-drv','c-pt','c-akh','c-rate'].forEach(id=>document.getElementById(id).addEventListener('input',cost));
 
-function renderAll(){renderDays();renderLanes();renderPool();recompute();}
+const ROSTER=[
+  ['#2001','20ft reefer','Fleet One','Vince Montemarano','snap','SNAP','dedicated Cleveland'],
+  ['#2002','16ft box','Fleet One (kept)','Part-time driver','part','Extra','partial SNAP Mon + RD Cle 9–12 Tue–Fri · ~30 h/wk'],
+  ['#2004','16ft box','Penske','Shameria Morris','snap','SNAP + Akron','Akron delivery/selection Tue/Thu'],
+  ['#2005','16ft box','Penske','Anderson Curry','rd','RD Cle (back leg)','service partner — subcontracted'],
+  ['#2006','26ft box','International ’25/’26','Pete Maldonado','snap','SNAP','new · commissioned · lease asset # TBD'],
+  ['Benz Sprinter','reefer van','Intl Mercedes-Benz','Christine Puskar','akr','Akron selection','staged at RD Cleveland · Mon/Wed'],
+  ['John vans ×2','ProMaster City (dry)','John Poppas (borrowed)','SNAP off-route drivers','cfh','CFH Cleveland','staged at Hildebrand · 9:30–12'],
+];
+const PCLS={snap:'p-snap',rd:'p-rd',cfh:'p-cfh',akr:'p-akr',part:'p-part'};
+function renderRoster(){document.getElementById('roster-b').innerHTML=ROSTER.map(r=>
+  `<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td><span class="pill ${PCLS[r[4]]}">${r[5]}</span></td><td style="color:var(--ink2)">${r[6]}</td></tr>`).join('');}
 
-function autoFit(){clearAll();const s=(k,v)=>assign[k]=v;
-  s('snap-t-0','t2004');s('snap-t-1','t2002');s('snap-t-2','t2005');
-  s('snap-d-0','dvince');s('snap-d-1','dmanuel');s('snap-d-2','dmorris');
-  s('rdf-t-0','t2004');s('rdf-d-0','dpuskar');
-  s('chef-t-0','t2002');s('chef-t-1','t2005');s('chef-d-0','dvince');s('chef-d-1','dmanuel');
-  s('aksel-d-0','djones');
-  if(day==='Mon'){s('snap-t-3','t1003');s('snap-d-3','dopen1');}
-  if(['Mon','Wed','Fri'].includes(day)){s('akdel-t-0','t1003');s('akdel-d-0','dopen1');}
+const CAP=[
+  ['Vince Montemarano','#2001','SNAP','4:56a','11:28a','6.5h','6.6','128','free ~11:28a onward'],
+  ['Pete Maldonado','→ #2006','SNAP','4:49a','1:38p','8.8h','6.1','150','longest day — tight after 1:38p'],
+  ['Shameria Morris','#2004','SNAP','8:14a','11:44a','3.5h','3.6','106','free ~11:44a → Akron Tue/Thu'],
+  ['Christine Puskar','Benz','CFH/Akron','10:49a','2:52p','4.0h','6.3','55','open before ~10:49a'],
+  ['Anderson Curry','#2005','RD Cle','9:52a','4:09p','6.3h','3.8','102','partner — full afternoon'],
+  ['Landon (CFH-Cle)','John van','CFH','9:20a','1:07p','3.8h','7.3','59','current CFH runner'],
+];
+function renderCap(){document.getElementById('cap-b').innerHTML=CAP.map(r=>
+  `<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td>${r[2]}</td><td class="n">${r[3]}</td><td class="n">${r[4]}</td><td class="n">${r[5]}</td><td class="n">${r[6]}</td><td class="n">${r[7]}</td><td class="free">${r[8]}</td></tr>`).join('');
+  document.getElementById('cap-note').innerHTML='<b>Basis:</b> May 4–15 Routific export, Cleveland-market routes, averaged per driver-day. Span = first arrival → last departure (add 0.5h AM load + 0.5h PM cleanup to get paid time; SNAP clock starts 4:30a). <b>Meal Count was blank in the export</b>, so per-stop volume/efficiency isn’t modeled yet — I can pull it from the SNAP billing source to finish the profit side.';}
+
+function renderAll(){renderDays();renderLanes();renderPool();renderRoster();renderCap();recompute();}
+function loadPlan(){clearAll();const s=(k,v)=>assign[k]=v;
+  s('snap-t-0','t2001');s('snap-t-1','t2004');s('snap-t-2','t2006');
+  s('snap-d-0','dvince');s('snap-d-1','dsham');s('snap-d-2','dpete');
+  s('cfh-t-0','john1');s('cfh-t-1','john2');s('cfh-d-0','dvince');s('cfh-d-1','dsham');
+  s('rdf-t-0','t2002');s('rdf-d-0','dpt');
+  s('clesel-d-0','djulio');
+  if(day==='Mon'){s('snap-t-3','t2002');s('snap-d-3','dpt');}
   renderAll();}
-
-document.getElementById('notes').innerHTML=
- '<b>Model notes.</b> SNAP drivers finish at 9:00, so the same drivers and trucks roll straight into RD Cleveland front leg (9–12) and Chefs for Hire (10:30–12:30) — no time overlap, so a unit can fill both. '
- +'Auto-fit reuses the freed SNAP units downstream and shows owned #1003 covering the Monday morning SNAP route and the same-day Akron afternoon (non-overlapping) with one open driver. '
- +'Trucks: 3 Penske + 2 Fleet One + 2 owned in the Cleveland Fleet base — see data flags above; the verbal “2 Penske + 2 Fleet One, one returns” doesn’t fully match, so confirm which units are truly assigned vs free before locking the plan.';
-
-renderAll();
+document.getElementById('notes').innerHTML='<b>How to use in the meeting:</b> toggle the day to see coverage and watch-items; the roster is the source of truth for who’s in what asset; the capacity table shows where the free hours are for the next customer. Everything here is a working draft off the call — the red flags are the items to confirm before committing budget or headcount.';
+loadPlan();
 </script>
 </body>
 </html>

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Cleveland fleet &amp; staffing capacity — SupplyNow</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css" />
+<style>
+  :root{
+    --bg:#f7f7f4; --card:#ffffff; --ink:#1c1c1a; --ink2:#5f5e59; --ink3:#8b8a83;
+    --line:#e4e3dc; --line2:#cfcec6;
+    --blue-bg:#e6f1fb; --blue-tx:#0c447c; --blue-bd:#85b7eb;
+    --green-bg:#eaf3de; --green-tx:#27500a; --green-bd:#97c459;
+    --amber-bg:#faeeda; --amber-tx:#633806; --amber-bd:#ef9f27;
+    --red-bg:#fcebeb; --red-tx:#791f1f; --red-bd:#f09595;
+    --gray-bg:#f1efe8; --gray-tx:#444441;
+    --radius:8px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{--bg:#191917;--card:#232320;--ink:#f2f1ea;--ink2:#bdbcb2;--ink3:#8b8a83;
+      --line:#34342f;--line2:#45453f;
+      --blue-bg:#123b5f;--blue-tx:#b5d4f4;--blue-bd:#185fa5;
+      --green-bg:#1f3f13;--green-tx:#c0dd97;--green-bd:#3b6d11;
+      --amber-bg:#4a2f0a;--amber-tx:#fac775;--amber-bd:#854f0b;
+      --red-bg:#4a1717;--red-tx:#f7c1c1;--red-bd:#a32d2d;
+      --gray-bg:#2c2c28;--gray-tx:#d3d1c7;}
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.5;-webkit-text-size-adjust:100%}
+  .wrap{max-width:860px;margin:0 auto;padding:20px 16px 60px}
+  header h1{font-size:22px;font-weight:600;margin:0 0 4px}
+  header p{margin:0;color:var(--ink2);font-size:14px}
+  .stamp{font-size:12px;color:var(--ink3);margin-top:6px}
+  .days{display:flex;gap:6px;margin:20px 0 14px;flex-wrap:wrap}
+  .day{font-size:14px;padding:7px 15px;border:1px solid var(--line2);border-radius:var(--radius);background:var(--card);color:var(--ink);cursor:pointer}
+  .day.on{background:var(--blue-bg);color:var(--blue-tx);border-color:var(--blue-bd);font-weight:600}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:0 0 18px}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:11px 13px}
+  .kpi .lab{font-size:12px;color:var(--ink2);margin:0 0 4px}
+  .kpi .val{font-size:26px;font-weight:600;line-height:1}
+  .kpi .val.bad{color:var(--red-tx)} .kpi .val.ok{color:var(--green-tx)}
+  .kpi .sub{font-size:11px;color:var(--ink3);margin-top:4px}
+  .gapbox{background:var(--amber-bg);border:1px solid var(--amber-bd);border-radius:var(--radius);padding:12px 14px;margin:0 0 20px}
+  .gapbox h3{margin:0 0 8px;font-size:14px;color:var(--amber-tx);font-weight:600;display:flex;align-items:center;gap:6px}
+  .gapbox ul{margin:0;padding-left:18px;font-size:13.5px;color:var(--amber-tx)}
+  .gapbox li{margin:3px 0}
+  .gapbox li.clear{color:var(--green-tx)}
+  h2.sec{font-size:15px;font-weight:600;margin:24px 0 10px;color:var(--ink2)}
+  .lane{border:1px solid var(--line);border-radius:12px;padding:13px 14px;margin:0 0 11px;background:var(--card)}
+  .lane.par{background:var(--bg)}
+  .lane-hd{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 10px;flex-wrap:wrap}
+  .lane-nm{font-size:15.5px;font-weight:600;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+  .lane-nm small{font-size:12.5px;color:var(--ink3);font-weight:400}
+  .badge{font-size:11px;padding:3px 9px;border-radius:20px;font-weight:600;white-space:nowrap}
+  .b-time{background:var(--gray-bg);color:var(--gray-tx);border-radius:var(--radius)}
+  .b-roll{background:var(--green-bg);color:var(--green-tx)}
+  .b-new{background:var(--amber-bg);color:var(--amber-tx)}
+  .b-par{background:var(--blue-bg);color:var(--blue-tx)}
+  .slot-row{display:flex;align-items:center;gap:8px;margin:7px 0;flex-wrap:wrap}
+  .slot-row .rl{font-size:12px;color:var(--ink2);width:64px;flex:none;display:flex;align-items:center;gap:4px}
+  .slot{min-width:132px;min-height:36px;border:1.5px dashed var(--line2);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--ink3);padding:3px 8px}
+  .slot.need{border-color:var(--red-bd);background:var(--red-bg);color:var(--red-tx)}
+  .slot.over{border-style:solid;border-color:var(--blue-bd);background:var(--blue-bg)}
+  .slot.full{border-style:solid;border-color:var(--line);padding:3px}
+  .slot .chip{width:100%;margin:0}
+  .chip{display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;padding:6px 9px;border-radius:var(--radius);cursor:grab;user-select:none;border:1px solid transparent}
+  .chip.tk{background:var(--blue-bg);color:var(--blue-tx)}
+  .chip.dr{background:var(--green-bg);color:var(--green-tx)}
+  .chip.locked{opacity:.85;cursor:default}
+  .chip.armed{outline:2px solid var(--ink);outline-offset:1px}
+  .chip.conf{outline:2px solid var(--red-tx);outline-offset:1px}
+  .chip .x{margin-left:auto;cursor:pointer;opacity:.55;font-size:15px;line-height:1;padding:0 2px}
+  .chip .x:hover{opacity:1}
+  .pool{border:1px solid var(--line);border-radius:12px;padding:14px;margin:8px 0 0;background:var(--card)}
+  .pool h4{font-size:13px;font-weight:600;margin:0 0 4px}
+  .pool .hint{font-size:12px;color:var(--ink3);margin:0 0 12px}
+  .pcol{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media (max-width:560px){.pcol{grid-template-columns:1fr}}
+  .colhd{font-size:12px;color:var(--ink2);margin-bottom:7px;font-weight:600;display:flex;align-items:center;gap:5px}
+  .pchips{display:flex;flex-direction:column;gap:7px;min-height:24px}
+  .out{margin-top:12px;padding-top:10px;border-top:1px dashed var(--line2)}
+  .out .colhd{color:var(--ink3)}
+  .chip.dim{background:var(--gray-bg);color:var(--ink3);cursor:default;font-weight:400}
+  .chip.dim .tagx{margin-left:auto;font-size:10px}
+  .toolbar{display:flex;gap:8px;margin:16px 0 0;flex-wrap:wrap}
+  .btn{font-size:13px;padding:8px 14px;border:1px solid var(--line2);border-radius:var(--radius);background:var(--card);color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+  .btn:hover{background:var(--bg)}
+  .btn.pri{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--ink2);margin:0 0 14px}
+  .legend span{display:flex;align-items:center;gap:6px}
+  .sw{width:12px;height:12px;border-radius:3px;display:inline-block}
+  .note{font-size:12px;color:var(--ink3);margin-top:18px;line-height:1.6}
+  .note b{color:var(--ink2);font-weight:600}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Cleveland fleet &amp; staffing capacity</h1>
+    <p>Ops planning — which customers we service, and the vehicles &amp; people to cover them.</p>
+    <div class="stamp">SupplyNow · working draft · drag or tap to move pieces around</div>
+  </header>
+
+  <div class="days" id="days"></div>
+
+  <div class="legend">
+    <span><span class="sw" style="background:var(--blue-bd)"></span>truck / vehicle</span>
+    <span><span class="sw" style="background:var(--green-bd)"></span>driver / person</span>
+    <span><span class="sw" style="background:var(--red-bd)"></span>open need</span>
+    <span><span class="sw" style="background:var(--green-bg)"></span>rolls over from SNAP</span>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi"><p class="lab">Peak trucks at once</p><p class="val" id="k-peak">–</p><p class="sub" id="k-peakw"></p></div>
+    <div class="kpi"><p class="lab">Trucks in play</p><p class="val" id="k-trucks">–</p><p class="sub">own fleet, after returns</p></div>
+    <div class="kpi"><p class="lab">Open slots</p><p class="val" id="k-open">–</p><p class="sub">trucks · drivers</p></div>
+    <div class="kpi"><p class="lab">Double-booked</p><p class="val" id="k-conf">–</p><p class="sub">same unit, same time</p></div>
+  </div>
+
+  <div class="gapbox">
+    <h3><i class="ti ti-alert-triangle"></i> Known gaps to solve</h3>
+    <ul id="gaplist"></ul>
+  </div>
+
+  <h2 class="sec">Service windows</h2>
+  <div id="lanes"></div>
+
+  <div class="pool">
+    <h4>Resource pool</h4>
+    <p class="hint">Tap a chip then tap a slot — or drag it. A unit can serve two windows if their times don’t overlap (that’s the SNAP → Chefs / RD front roll-over).</p>
+    <div class="pcol">
+      <div>
+        <div class="colhd"><i class="ti ti-truck"></i> Trucks / vehicles</div>
+        <div class="pchips" id="pool-tk"></div>
+      </div>
+      <div>
+        <div class="colhd"><i class="ti ti-user"></i> Drivers / people</div>
+        <div class="pchips" id="pool-dr"></div>
+      </div>
+    </div>
+    <div class="out">
+      <div class="colhd">Out of the account</div>
+      <div class="pchips" id="pool-out"></div>
+    </div>
+    <div class="toolbar">
+      <button class="btn pri" onclick="autoFit()"><i class="ti ti-wand"></i> Auto-fit</button>
+      <button class="btn" onclick="clearAll()"><i class="ti ti-eraser"></i> Clear</button>
+    </div>
+  </div>
+
+  <p class="note" id="notes"></p>
+</div>
+
+<script>
+const CHIPS=[
+  {id:'penA',kind:'tk',label:'Penske A',sub:'16ft · SNAP'},
+  {id:'f1a',kind:'tk',label:'Fleet One #1',sub:'16ft · SNAP'},
+  {id:'t128',kind:'tk',label:'26ft · Fleet #128',sub:'new — replaces returned 16ft'},
+  {id:'d1',kind:'dr',label:'SNAP driver 1'},
+  {id:'d2',kind:'dr',label:'SNAP driver 2'},
+  {id:'d3',kind:'dr',label:'SNAP driver 3',sub:'Akron Tue/Thu'},
+  {id:'do1',kind:'dr',label:'Open driver A'},
+  {id:'do2',kind:'dr',label:'Open driver B'},
+];
+const OUT=[
+  {label:'Penske B',tag:'16ft · service partner'},
+  {label:'Fleet One #2',tag:'16ft · returning to Fleet One'},
+];
+const LANES=[
+  {id:'snap',nm:'SNAP',sub:'anchor · 3 routes',time:'4:30–9:00a',s:4.5,e:9,tk:3,dr:3,monTk:4,monDr:4,monTag:'Mon +1 route (half cap)'},
+  {id:'rdf',nm:'RD Cleveland — front leg',time:'9:00a–12:00p',s:9,e:12,tk:1,dr:1,roll:true},
+  {id:'chef',nm:'Chefs for Hire',time:'10:30a–12:30p',s:10.5,e:12.5,tk:2,dr:2,roll:true},
+  {id:'rdb',nm:'RD Cleveland — back leg',time:'12:00–4:00p',s:12,e:16,partner:true},
+  {id:'aksel',nm:'RD Akron — selection',time:'all day · Mon–Fri',s:6,e:16,tk:0,dr:1},
+  {id:'akdel',nm:'RD Akron — delivery',time:'afternoon · Mon–Fri',s:12,e:16,tk:1,dr:1,coveredDays:['Tue','Thu'],coverNote:'covered — SNAP driver 3 + freed truck'},
+];
+const DAYS=['Mon','Tue','Wed','Thu','Fri'];
+let day='Mon';
+const assign={};
+let armed=null;
+
+const byId=id=>CHIPS.find(c=>c.id===id);
+const tkN=l=>day==='Mon'&&l.monTk?l.monTk:(l.tk||0);
+const drN=l=>day==='Mon'&&l.monDr?l.monDr:(l.dr||0);
+const laneOn=l=>!l.days||l.days.includes(day);
+const covered=l=>l.coveredDays&&l.coveredDays.includes(day);
+const slotsFor=id=>Object.keys(assign).filter(k=>assign[k]===id);
+const laneOfSlot=sid=>LANES.find(l=>sid.startsWith(l.id+'-'));
+const overlap=(a,b)=>a.s<b.e&&b.s<a.e;
+function conflictsFor(id){const sl=slotsFor(id).map(laneOfSlot).filter(Boolean);const bad=new Set();
+  for(let i=0;i<sl.length;i++)for(let j=i+1;j<sl.length;j++)if(overlap(sl[i],sl[j])){bad.add(sl[i].id);bad.add(sl[j].id);}return bad;}
+
+function renderDays(){document.getElementById('days').innerHTML=
+  DAYS.map(x=>`<button class="day ${x===day?'on':''}" onclick="setDay('${x}')">${x}${x==='Mon'?' · peak':''}</button>`).join('');}
+function setDay(x){day=x;armed=null;renderAll();}
+
+function slotHTML(sid,kind){const cid=assign[sid];
+  if(cid){const c=byId(cid);const conf=conflictsFor(cid).has(sid);
+    return `<div class="slot full" data-sid="${sid}" data-kind="${kind}">
+      <div class="chip ${kind} ${conf?'conf':''}"><i class="ti ti-${kind==='tk'?'truck':'user'}"></i>${c.label}
+      <span class="x" onclick="unassign(event,'${sid}')">&times;</span></div></div>`;}
+  return `<div class="slot need" data-sid="${sid}" data-kind="${kind}" onclick="placeArmed('${sid}','${kind}')">need ${kind==='tk'?'truck':'driver'}</div>`;}
+
+function renderLanes(){
+  document.getElementById('lanes').innerHTML=LANES.filter(laneOn).map(l=>{
+    let bd=`<span class="badge b-time">${l.time}</span>`;
+    if(l.roll)bd+=' <span class="badge b-roll">roll-over</span>';
+    if(l.partner)bd+=' <span class="badge b-par">service partner</span>';
+    if(l.id==='snap'&&day==='Mon')bd+=` <span class="badge b-new">${l.monTag}</span>`;
+    let body='';
+    if(l.partner){body=`<div style="font-size:13px;color:var(--ink2)">Partner brings own truck &amp; driver — not counted against our fleet.</div>`;}
+    else if(covered(l)){body=`<div class="slot-row"><span class="rl"></span><div class="chip dr locked" style="max-width:280px"><i class="ti ti-circle-check"></i>${l.coverNote}</div></div>`;}
+    else{
+      const tks=Array.from({length:tkN(l)},(_,i)=>slotHTML(`${l.id}-t-${i}`,'tk')).join('');
+      const drs=Array.from({length:drN(l)},(_,i)=>slotHTML(`${l.id}-d-${i}`,'dr')).join('');
+      body=(tkN(l)?`<div class="slot-row"><span class="rl"><i class="ti ti-truck"></i>Trucks</span>${tks}</div>`:'')
+          +(drN(l)?`<div class="slot-row"><span class="rl"><i class="ti ti-user"></i>Drivers</span>${drs}</div>`:'');
+    }
+    return `<div class="lane ${l.partner?'par':''}">
+      <div class="lane-hd"><span class="lane-nm">${l.nm}${l.sub?` <small>${l.sub}</small>`:''}</span><span>${bd}</span></div>
+      ${body}</div>`;
+  }).join('');
+  wireDrop();
+}
+
+function renderPool(){
+  ['tk','dr'].forEach(k=>{
+    document.getElementById('pool-'+k).innerHTML=CHIPS.filter(c=>c.kind===k).map(c=>{
+      const used=slotsFor(c.id).length;
+      return `<div class="chip ${k} ${armed===c.id?'armed':''}" data-cid="${c.id}" draggable="true" onclick="arm('${c.id}')">
+        <i class="ti ti-${k==='tk'?'truck':'user'}"></i>${c.label}${c.sub?` · ${c.sub}`:''}
+        ${used?`<span style="margin-left:auto;font-size:10px;opacity:.7">×${used}</span>`:''}</div>`;
+    }).join('');
+  });
+  document.getElementById('pool-out').innerHTML=OUT.map(o=>
+    `<div class="chip dim"><i class="ti ti-ban"></i>${o.label}<span class="tagx">${o.tag}</span></div>`).join('');
+  wireDrag();
+}
+
+let dragCid=null;
+function wireDrag(){document.querySelectorAll('.chip[draggable]').forEach(ch=>{
+  ch.ondragstart=e=>{dragCid=ch.dataset.cid;e.dataTransfer.effectAllowed='copy';e.dataTransfer.setData('text',dragCid);};});}
+function wireDrop(){document.querySelectorAll('.slot').forEach(s=>{
+  s.ondragover=e=>{const c=byId(dragCid);if(c&&c.kind===s.dataset.kind){e.preventDefault();s.classList.add('over');}};
+  s.ondragleave=()=>s.classList.remove('over');
+  s.ondrop=e=>{e.preventDefault();s.classList.remove('over');const c=byId(dragCid);
+    if(c&&c.kind===s.dataset.kind){assign[s.dataset.sid]=dragCid;renderAll();}};});}
+function arm(cid){armed=armed===cid?null:cid;renderPool();}
+function placeArmed(sid,kind){if(armed&&byId(armed).kind===kind){assign[sid]=armed;armed=null;renderAll();}}
+function unassign(e,sid){e.stopPropagation();delete assign[sid];renderAll();}
+function clearAll(){Object.keys(assign).forEach(k=>delete assign[k]);armed=null;renderAll();}
+
+function recompute(){
+  const shifts=[];
+  LANES.filter(l=>laneOn(l)&&!l.partner&&!covered(l)&&tkN(l)>0).forEach(l=>shifts.push({s:l.s,e:l.e,n:tkN(l)}));
+  const pts=[...new Set(shifts.flatMap(x=>[x.s,x.e]))].sort((a,b)=>a-b);
+  let peak=0,at=0;
+  for(let i=0;i<pts.length-1;i++){const m=(pts[i]+pts[i+1])/2;
+    const c=shifts.filter(x=>x.s<=m&&m<x.e).reduce((a,x)=>a+x.n,0);if(c>peak){peak=c;at=pts[i];}}
+  const inplay=CHIPS.filter(c=>c.kind==='tk').length;
+  const kp=document.getElementById('k-peak');kp.textContent=peak;kp.className='val '+(peak>inplay?'bad':'ok');
+  const h=Math.floor(at),mn=(at%1)?'30':'00';document.getElementById('k-peakw').textContent=`at ${h>12?h-12:h}:${mn}${h>=12?'p':'a'}`;
+  document.getElementById('k-trucks').textContent=inplay;
+  let ot=0,od=0;
+  LANES.filter(l=>laneOn(l)&&!l.partner&&!covered(l)).forEach(l=>{
+    for(let i=0;i<tkN(l);i++)if(!assign[`${l.id}-t-${i}`])ot++;
+    for(let i=0;i<drN(l);i++)if(!assign[`${l.id}-d-${i}`])od++;});
+  const ko=document.getElementById('k-open');ko.textContent=`${ot} · ${od}`;ko.className='val '+((ot+od)?'bad':'ok');
+  const conf=new Set();CHIPS.forEach(c=>conflictsFor(c.id).forEach(x=>conf.add(x)));
+  const kc=document.getElementById('k-conf');kc.textContent=conf.size;kc.className='val '+(conf.size?'bad':'ok');
+
+  const gaps=[];
+  if(day==='Mon')gaps.push('<li><b>SNAP Monday</b> — needs 1 extra driver + 1 extra 16ft truck for the 4th half-capacity route (4:30–9:00a). No spare vehicle today.</li>');
+  if(['Mon','Wed','Fri'].includes(day))gaps.push(`<li><b>Akron delivery ${day}</b> — needs 1 vehicle + 1 driver (Tue/Thu are covered by SNAP driver 3).</li>`);
+  if(!gaps.length)gaps.push('<li class="clear">No standing asset gap today — SNAP frees up at 9:00 and rolls into RD front leg and Chefs for Hire.</li>');
+  document.getElementById('gaplist').innerHTML=gaps.join('');
+}
+function renderAll(){renderDays();renderLanes();renderPool();recompute();}
+
+function autoFit(){clearAll();const s=(k,v)=>assign[k]=v;
+  s('snap-t-0','penA');s('snap-t-1','f1a');s('snap-t-2','t128');
+  s('snap-d-0','d1');s('snap-d-1','d2');s('snap-d-2','d3');
+  s('rdf-t-0','penA');s('rdf-d-0','d1');
+  s('chef-t-0','f1a');s('chef-t-1','t128');s('chef-d-0','d2');s('chef-d-1','d3');
+  s('aksel-d-0','do1');
+  if(day==='Mon'){s('snap-t-3','penA');s('snap-d-3','do2');}
+  if(['Mon','Wed','Fri'].includes(day)){s('akdel-d-0','do1');}
+  renderAll();}
+
+document.getElementById('notes').innerHTML=
+ '<b>Model notes.</b> SNAP drivers finish at 9:00, so the same drivers and trucks roll straight into RD Cleveland front leg (9–12) and Chefs for Hire (10:30–12:30) — no time overlap, so a unit can fill both. '
+ +'Fleet: 2 Penske + 2 Fleet One, all 16ft box trucks. One Penske is with a service partner (out); one Fleet One 16ft returns to Fleet One and is replaced by the 26ft Fleet #128 — leaving 3 trucks in play for SNAP. '
+ +'Auto-fit places the freed SNAP units into the afternoon lanes as a starting point; the red slots are the real gaps to hire or acquire against.';
+
+renderAll();
+</script>
+</body>
+</html>

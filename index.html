@@ -133,8 +133,9 @@
     <h3><i class="ti ti-checkbox"></i> Decisions from the call</h3>
     <ul>
       <li><b>CFH — no more John Poppas service/staff.</b> New play: SNAP off-route drivers park reefers at the <b>Hildebrand building</b>, jump into John’s <b>2 Dodge ProMaster City (dry) vans</b>, and run CFH Cleveland from 9:30a–12.</li>
-      <li><b>Fleet One:</b> we keep our 16ft reefer <i>and</i> take on the 26ft reefer → <b>+1 vehicle</b> for Cleveland.</li>
-      <li><b>Benz Sprinter</b> (International Mercedes-Benz, reefer van) staged at RD Cleveland → <b>Christine</b> runs Akron selection Mon/Wed; <b>Shameria</b> runs Akron delivery + selection Tue/Thu → <b>Akron covered Mon–Thu</b>.</li>
+      <li><b>Fleet One:</b> we keep our 16ft reefer <i>and</i> take on the 26ft reefer (= <b>#2006</b>, same truck) → <b>+1 vehicle</b> for Cleveland. Placeholder line added in Airtable.</li>
+      <li><b>CFH product is DRY</b> — John’s 2 ProMaster vans are the right vehicle. New lease line ~<b>$150/day for both</b> (TBD).</li>
+      <li><b>Benz Sprinter</b> (International Mercedes-Benz, reefer van) staged at RD Cleveland → <b>Christine</b> runs Akron selection Mon/Wed; <b>Shameria</b> runs Akron delivery + selection Tue/Thu, and <b>Friday</b> (her route + Akron selection + delivery) → <b>Akron covered Mon–Fri</b>.</li>
       <li><b>#2006</b> (new 26ft International) → <b>Pete</b> for SNAP, which frees <b>#2002</b> (kept 16ft) for a <b>part-time driver</b>: partial SNAP Mon + RD Cleveland 9–12 Tue–Fri (~30 hrs/wk).</li>
       <li>With Christine in Akron Mon/Wed, Cleveland (Valley View) selection drops to <b>one selector — Julio</b> those days.</li>
     </ul>
@@ -170,13 +171,17 @@
   <table class="t"><thead><tr><th>Driver</th><th>Truck</th><th>Project</th><th class="n">Start</th><th class="n">End</th><th class="n">Span</th><th class="n">Stops/day</th><th class="n">Mi/day</th><th>Free bandwidth</th></tr></thead><tbody id="cap-b"></tbody></table>
   <p class="note" id="cap-note"></p>
 
+  <h2 class="sec">Where each driver’s day goes <span class="sub">share of service time by vendor code — SNAP 100 · Depot 200 · CFH 300</span></h2>
+  <table class="t"><thead><tr><th>Driver</th><th>SNAP</th><th>Depot</th><th>CFH</th><th>Read</th></tr></thead><tbody id="split-b"></tbody></table>
+  <p class="note">Segmented directly from the export’s Vendor Code, Cleveland/OH rows. Confirms SNAP is <b>run together with Depot</b> in the same driver-day — the roll-over is real, and Shameria is already mostly a Depot/Akron driver.</p>
+
   <h2 class="sec" id="cost">Cost to close the gaps</h2>
   <div class="cost">
     <div class="cost-in">
       <div><label>Truck $/day</label><input type="number" id="c-truck" value="75" min="0" step="5"></div>
       <div><label>Driver $/hour (loaded)</label><input type="number" id="c-drv" value="22" min="0" step="1"></div>
       <div><label>Part-time driver hrs/wk</label><input type="number" id="c-pt" value="30" min="0" step="1"></div>
-      <div><label>Akron delivery hrs/day</label><input type="number" id="c-akh" value="4" min="0" step="0.5"></div>
+      <div><label>CFH vans $/day (both)</label><input type="number" id="c-cfh" value="150" min="0" step="10"></div>
       <div><label>Routed-hour rate $ (rev ref)</label><input type="number" id="c-rate" value="86" min="0" step="1"></div>
     </div>
     <table class="t"><thead><tr><th>Line</th><th class="n">Days/wk</th><th class="n">Cost/wk</th><th class="n">Cost/mo</th><th class="n">Routed-hr value/mo</th></tr></thead><tbody id="cost-b"></tbody></table>
@@ -194,12 +199,12 @@
   <h2 class="sec" id="flags">Flags — reconcile before locking</h2>
   <div class="callout c-flag"><h3><i class="ti ti-flag"></i> What the data doesn’t back up yet</h3>
     <ul>
-      <li><b>“SNAP done by 9:00” isn’t in the routing.</b> May spans ran to ~11:28a (Vince) and ~1:38p (Pete). The 9:30 Hildebrand hand-off to CFH needs SNAP re-sequenced to finish earlier, or a different driver takes CFH.</li>
-      <li><b>Two 26-footers?</b> The Fleet One “26ft reefer we take on” vs <b>#2006</b> (26ft International box for Pete) — same unit or two? And which unit is the “16ft reefer we keep”?</li>
-      <li><b>#2006 lease asset # is unknown</b> and it’s <b>not taken on yet</b> (marked commissioned). Pete’s SNAP move + freeing #2002 depend on it landing.</li>
-      <li><b>John’s ProMaster vans are DRY</b>, not refrigerated — CFH cold-chain rides on getting reefers back to Hildebrand by 12, or the driver ubers back.</li>
-      <li><b>Friday Akron</b> isn’t covered by the Mon–Thu plan. <b>Meal Count</b> was empty in the export, so per-stop volume isn’t modeled yet.</li>
+      <li><b>Drivers aren’t free at 9:00 — SNAP and Depot run together.</b> By vendor code, Vince’s day is 64% SNAP / 36% Depot and Pete’s is 82% / 18%; spans run to ~11:28a–1:38p. The 9:30 Hildebrand hand-off to CFH needs SNAP+Depot re-sequenced to finish earlier, or a dedicated CFH driver.</li>
+      <li><b>#2006 lease asset # is unknown</b> and it’s <b>not taken on yet</b> (placeholder line in Airtable). Pete’s SNAP move + freeing #2002 depend on it landing.</li>
+      <li><b>CFH van lease is TBD</b> — modeled at $150/day for both; confirm the real number.</li>
+      <li><b>Meal Count was empty in the export</b>, so per-stop volume and profit-per-driver aren’t modeled yet — needs the SNAP billing / meal-count source.</li>
     </ul>
+    <p style="margin:8px 0 0;font-size:12.5px;color:var(--green-tx)"><i class="ti ti-check"></i> Resolved this round: the 26ft reefer and #2006 are the <b>same truck</b>; CFH is <b>dry</b> so the ProMaster vans fit; <b>Friday Akron</b> is covered by Shameria.</p>
   </div>
 
   <p class="note" id="notes"></p>
@@ -234,14 +239,14 @@ const LANES=[
   {id:'snap',nm:'SNAP',sub:'anchor · 3 routes',time:'from 4:30a',s:4.5,e:11.5,tk:3,dr:3,monTk:4,monDr:4,monTag:'Mon +1 partial route (#2002)',
    note:'Core routes: Vince #2001, Shameria #2004, Pete #2006. May actual spans run to ~11:28a–1:38p — not 9:00a.'},
   {id:'cfh',nm:'CFH Cleveland',time:'9:30a–12:00p',s:9.5,e:12,tk:2,dr:2,dry:true,roll:true,
-   note:'SNAP off-route drivers park reefers at Hildebrand, run John’s 2 dry ProMaster vans. Reefers must be back by 12 to reload.'},
+   note:'CFH is DRY — John’s 2 ProMaster vans are the right vehicle (~$150/day for both). SNAP off-route drivers hand off at the Hildebrand building; no cold-chain constraint.'},
   {id:'rdf',nm:'RD Cleveland — front leg',time:'9:00a–12:00p',s:9,e:12,tk:1,dr:1,
    note:'Part-time driver on #2002, Tue–Fri (partial SNAP on Mon).'},
   {id:'rdb',nm:'RD Cleveland — back leg',time:'12:00–4:00p',s:12,e:16,partner:true,
    note:'#2005 · Anderson — service partner, subcontracted.'},
-  {id:'akron',nm:'RD Akron — selection + delivery',time:'Mon–Thu',s:9.5,e:16,tk:1,dr:1,
-   coveredNote:{Mon:'Christine — selection (Benz Sprinter)',Wed:'Christine — selection (Benz Sprinter)',Tue:'Shameria — delivery + selection',Thu:'Shameria — delivery + selection'},
-   note:'Benz Sprinter staged at RD Cleveland. Friday not yet covered.'},
+  {id:'akron',nm:'RD Akron — selection + delivery',time:'Mon–Fri',s:9.5,e:16,tk:1,dr:1,
+   coveredNote:{Mon:'Christine — selection (Benz Sprinter)',Wed:'Christine — selection (Benz Sprinter)',Tue:'Shameria — delivery + selection',Thu:'Shameria — delivery + selection',Fri:'Shameria — route + Akron selection + delivery'},
+   note:'Benz Sprinter staged at RD Cleveland. Covered Mon–Fri.'},
   {id:'clesel',nm:'Cleveland selection — Valley View',time:'Mon–Fri',s:6,e:12,tk:0,dr:1,thinDays:['Mon','Wed'],
    note:'Julio holds it; Mon/Wed drop to one selector while Christine is in Akron.'},
 ];
@@ -278,7 +283,6 @@ function renderLanes(){
     let body='';
     if(l.partner){body=`<div style="font-size:13px;color:var(--ink2)">Partner truck + driver — not counted against our fleet.</div>`;}
     else if(covered(l)){body=`<div class="slot-row"><span class="rl"></span><div class="chip dr" style="max-width:340px"><i class="ti ti-circle-check"></i>${l.coveredNote[day]}</div></div>`;}
-    else if(l.id==='akron'){body=`<div class="slot-row"><span class="rl"></span><div class="slot need" style="min-width:200px">Friday — not covered</div></div>`;}
     else{
       const tks=Array.from({length:tkN(l)},(_,i)=>slotHTML(`${l.id}-t-${i}`,'tk')).join('');
       const drs=Array.from({length:drN(l)},(_,i)=>slotHTML(`${l.id}-d-${i}`,'dr')).join('');
@@ -324,21 +328,20 @@ function recompute(){
   LANES.filter(l=>!l.partner&&!covered(l)).forEach(l=>{for(let i=0;i<tkN(l);i++)if(!assign[`${l.id}-t-${i}`])ot++;for(let i=0;i<drN(l);i++)if(!assign[`${l.id}-d-${i}`])od++;});
   const ko=document.getElementById('k-open');ko.textContent=`${ot} · ${od}`;ko.className='val '+((ot+od)?'bad':'ok');
   const g=[];
-  if(day==='Fri')g.push('<li><b>Akron Friday</b> — no coverage in the Mon–Thu plan. Assign a driver + the Benz Sprinter, or skip Fridays.</li>');
   if(['Mon','Wed'].includes(day))g.push('<li><b>Cleveland selection thin</b> — only Julio at Valley View while Christine is in Akron.</li>');
-  g.push('<li><b>CFH cold-chain</b> — John’s vans are dry; reefers must be back at Hildebrand by 12 to reload (else Uber back).</li>');
   if(day==='Mon')g.push('<li><b>SNAP Monday</b> — 4th partial route on #2002 (part-time driver).</li>');
+  g.push('<li class="clear"><b>Akron covered Mon–Fri</b> · CFH dry vans confirmed · all service windows staffed for '+day+'.</li>');
   document.getElementById('gaplist').innerHTML=g.join('');
   cost();
 }
 function money(n){return '$'+Math.round(n).toLocaleString();}
 function cost(){
   const truck=+document.getElementById('c-truck').value||0,drv=+document.getElementById('c-drv').value||0;
-  const pt=+document.getElementById('c-pt').value||0,akh=+document.getElementById('c-akh').value||0,rate=+document.getElementById('c-rate').value||0;
+  const pt=+document.getElementById('c-pt').value||0,cfh=+document.getElementById('c-cfh').value||0,rate=+document.getElementById('c-rate').value||0;
   const W=4.33;
   const rows=[
     {nm:'Part-time driver — #2002 (partial SNAP Mon + RD Cle Tue–Fri)',dpw:5,wk:truck*5+drv*pt,hrs:pt},
-    {nm:'Akron Friday — driver + Benz (if covered)',dpw:1,wk:(drv*akh)*1,hrs:akh},
+    {nm:'CFH vans — John’s 2 ProMaster (dry lease)',dpw:5,wk:cfh*5,hrs:0},
   ];
   let totM=0,html='';
   rows.forEach(r=>{const mo=r.wk*W,rev=r.hrs*rate*W;totM+=mo;
@@ -348,16 +351,16 @@ function cost(){
   document.getElementById('k-cost').textContent=money(totM);
   document.getElementById('cost-note').innerHTML=`<b>Read:</b> the plan’s incremental spend is dominated by the <b>part-time #2002 seat</b> (~${money((truck*5+drv*pt)*W)}/mo at these inputs). John’s vans are borrowed (no lease line here — confirm any usage fee). Routed-hour column values the added hours at $${rate}/hr for the revenue side.`;
 }
-['c-truck','c-drv','c-pt','c-akh','c-rate'].forEach(id=>document.getElementById(id).addEventListener('input',cost));
+['c-truck','c-drv','c-pt','c-cfh','c-rate'].forEach(id=>document.getElementById(id).addEventListener('input',cost));
 
 const ROSTER=[
   ['#2001','20ft reefer','Fleet One','Vince Montemarano','snap','SNAP','dedicated Cleveland'],
   ['#2002','16ft box','Fleet One (kept)','Part-time driver','part','Extra','partial SNAP Mon + RD Cle 9–12 Tue–Fri · ~30 h/wk'],
   ['#2004','16ft box','Penske','Shameria Morris','snap','SNAP + Akron','Akron delivery/selection Tue/Thu'],
   ['#2005','16ft box','Penske','Anderson Curry','rd','RD Cle (back leg)','service partner — subcontracted'],
-  ['#2006','26ft box','International ’25/’26','Pete Maldonado','snap','SNAP','new · commissioned · lease asset # TBD'],
+  ['#2006','26ft reefer','Fleet One (taken on)','Pete Maldonado','snap','SNAP','= the FleetOne 26ft reefer (same unit) · placeholder line in Airtable · lease asset # TBD · not taken on yet'],
   ['Benz Sprinter','reefer van','Intl Mercedes-Benz','Christine Puskar','akr','Akron selection','staged at RD Cleveland · Mon/Wed'],
-  ['John vans ×2','ProMaster City (dry)','John Poppas (borrowed)','SNAP off-route drivers','cfh','CFH Cleveland','staged at Hildebrand · 9:30–12'],
+  ['John vans ×2','ProMaster City (dry)','John Poppas (borrowed)','SNAP off-route drivers','cfh','CFH Cleveland','staged at Hildebrand · 9:30–12 · ~$150/day both · dry'],
 ];
 const PCLS={snap:'p-snap',rd:'p-rd',cfh:'p-cfh',akr:'p-akr',part:'p-part'};
 function renderRoster(){document.getElementById('roster-b').innerHTML=ROSTER.map(r=>
@@ -375,7 +378,18 @@ function renderCap(){document.getElementById('cap-b').innerHTML=CAP.map(r=>
   `<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td>${r[2]}</td><td class="n">${r[3]}</td><td class="n">${r[4]}</td><td class="n">${r[5]}</td><td class="n">${r[6]}</td><td class="n">${r[7]}</td><td class="free">${r[8]}</td></tr>`).join('');
   document.getElementById('cap-note').innerHTML='<b>Basis:</b> May 4–15 Routific export, Cleveland-market routes, averaged per driver-day. Span = first arrival → last departure (add 0.5h AM load + 0.5h PM cleanup to get paid time; SNAP clock starts 4:30a). <b>Meal Count was blank in the export</b>, so per-stop volume/efficiency isn’t modeled yet — I can pull it from the SNAP billing source to finish the profit side.';}
 
-function renderAll(){renderDays();renderLanes();renderPool();renderRoster();renderCap();recompute();}
+const SPLIT=[
+  ['Vince',64,36,0,'SNAP anchor, rolls into Depot'],
+  ['Pete',82,18,0,'heaviest SNAP load'],
+  ['Shameria',23,77,0,'mostly Depot → natural Akron fit'],
+  ['Christine',0,9,91,'CFH today → moving to Akron selection'],
+  ['Anderson',0,100,0,'full-time Depot (service partner)'],
+  ['Ray',0,0,100,'CFH only'],
+  ['Landon',0,0,100,'CFH only'],
+];
+function renderSplit(){const bar=(v,cls)=>v?`<span class="pill ${cls}">${v}%</span>`:'<span style="color:var(--ink3)">—</span>';
+  document.getElementById('split-b').innerHTML=SPLIT.map(r=>`<tr><td><b>${r[0]}</b></td><td>${bar(r[1],'p-snap')}</td><td>${bar(r[2],'p-rd')}</td><td>${bar(r[3],'p-cfh')}</td><td style="color:var(--ink2)">${r[4]}</td></tr>`).join('');}
+function renderAll(){renderDays();renderLanes();renderPool();renderRoster();renderCap();renderSplit();recompute();}
 function loadPlan(){clearAll();const s=(k,v)=>assign[k]=v;
   s('snap-t-0','t2001');s('snap-t-1','t2004');s('snap-t-2','t2006');
   s('snap-d-0','dvince');s('snap-d-1','dsham');s('snap-d-2','dpete');

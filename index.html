@@ -126,7 +126,7 @@
 
   <nav class="jump">
     <a href="#board">Service board</a><a href="#roster">Fleet roster</a><a href="#cap">Driver capacity</a>
-    <a href="#cost">Cost &amp; profit</a><a href="#scen">Scenarios</a><a href="#flags">Flags</a>
+    <a href="#profit">Profit/driver</a><a href="#cost">Cost</a><a href="#scen">Scenarios</a><a href="#flags">Flags</a>
   </nav>
 
   <div class="callout c-win">
@@ -186,6 +186,28 @@
     </div>
     <table class="t"><thead><tr><th>Line</th><th class="n">Days/wk</th><th class="n">Cost/wk</th><th class="n">Cost/mo</th><th class="n">Routed-hr value/mo</th></tr></thead><tbody id="cost-b"></tbody></table>
     <p class="note" id="cost-note"></p>
+  </div>
+
+  <h2 class="sec" id="profit">Profit per driver <span class="sub">weekly · CFH $45/stop · SNAP $86/routed-hr · Depot 14% of sales + $50/delivery</span></h2>
+  <div class="cost">
+    <div class="cost-in">
+      <div><label>SNAP $/routed hr</label><input type="number" id="p-snap" value="86" min="0" step="1"></div>
+      <div><label>CFH $/stop</label><input type="number" id="p-cfh" value="45" min="0" step="1"></div>
+      <div><label>Depot % of sales</label><input type="number" id="p-dep" value="14" min="0" step="0.5"></div>
+      <div><label>Depot $/delivery</label><input type="number" id="p-fee" value="50" min="0" step="5"></div>
+      <div><label>Driver $/hr (loaded)</label><input type="number" id="p-wage" value="22" min="0" step="1"></div>
+    </div>
+    <table class="t"><thead><tr><th>Driver</th><th class="n">SNAP rev</th><th class="n">CFH rev</th><th class="n">Depot rev</th><th class="n">Gross/wk</th><th class="n">Labor/wk</th><th class="n">Contribution</th></tr></thead><tbody id="prof-b"></tbody></table>
+    <p class="note" id="prof-note"></p>
+  </div>
+
+  <div class="callout c-win" style="margin-top:14px">
+    <h3><i class="ti ti-users"></i> CFH staffing — one net hire, not two</h3>
+    <ul>
+      <li>John’s CFH ran on <b>2 hired drivers</b> (Ray + Landon, ~<b id="cfh-stops">38</b> stops/wk ≈ <b id="cfh-gross">$1,710</b>/wk at $45). We take CFH in-house on his dry vans.</li>
+      <li><b>The slack is already on payroll:</b> Shameria runs just ~6.6 hrs/wk and finishes early; Vince/Pete have midday room. Fold one CFH van onto an existing SNAP-side driver and <b>hire only one part-timer</b> for the second van.</li>
+      <li id="cfh-ab"></li>
+    </ul>
   </div>
 
   <h2 class="sec" id="scen">Scenarios &amp; open fact-finds <span class="sub">the 8-week search for the next forever customer</span></h2>
@@ -376,7 +398,7 @@ const CAP=[
 ];
 function renderCap(){document.getElementById('cap-b').innerHTML=CAP.map(r=>
   `<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td>${r[2]}</td><td class="n">${r[3]}</td><td class="n">${r[4]}</td><td class="n">${r[5]}</td><td class="n">${r[6]}</td><td class="n">${r[7]}</td><td class="free">${r[8]}</td></tr>`).join('');
-  document.getElementById('cap-note').innerHTML='<b>Basis:</b> May 4–15 Routific export, Cleveland-market routes, averaged per driver-day. Span = first arrival → last departure (add 0.5h AM load + 0.5h PM cleanup to get paid time; SNAP clock starts 4:30a). <b>Meal Count was blank in the export</b>, so per-stop volume/efficiency isn’t modeled yet — I can pull it from the SNAP billing source to finish the profit side.';}
+  document.getElementById('cap-note').innerHTML='<b>Basis:</b> May 4–15 Routific export, Cleveland-market routes, averaged per driver-day. Span = first arrival → last departure (add 0.5h AM load + 0.5h PM cleanup to get paid time; SNAP clock starts 4:30a). <b>Meal Count was blank</b>, so SNAP is priced on routed hours (not meals) for now — swap in meal-based billing when you point me to the source.';}
 
 const SPLIT=[
   ['Vince',64,36,0,'SNAP anchor, rolls into Depot'],
@@ -389,7 +411,38 @@ const SPLIT=[
 ];
 function renderSplit(){const bar=(v,cls)=>v?`<span class="pill ${cls}">${v}%</span>`:'<span style="color:var(--ink3)">—</span>';
   document.getElementById('split-b').innerHTML=SPLIT.map(r=>`<tr><td><b>${r[0]}</b></td><td>${bar(r[1],'p-snap')}</td><td>${bar(r[2],'p-rd')}</td><td>${bar(r[3],'p-cfh')}</td><td style="color:var(--ink2)">${r[4]}</td></tr>`).join('');}
-function renderAll(){renderDays();renderLanes();renderPool();renderRoster();renderCap();renderSplit();recompute();}
+const PROF=[
+  ['Vince',12.9,0,6044,4.5,18.2,false],
+  ['Pete',11.9,0,1060,1,14.0,false],
+  ['Shameria',2.3,0,6005,5.5,6.6,false],
+  ['Christine',0,21.5,677,0.5,13.7,false],
+  ['Ray',0,16.5,0,0,9.3,false],
+  ['Landon',0,22,0,0,10.7,false],
+  ['Anderson',0,0,22922,16,24.1,true],
+];
+function prof(){
+  const rs=+val('p-snap'),rc=+val('p-cfh'),dp=(+val('p-dep'))/100,df=+val('p-fee'),w=+val('p-wage');
+  let tg=0,tl=0,tc=0,cfhStops=0;
+  const html=PROF.map(r=>{
+    const [nm,snapHrs,cfhSt,depSales,depDel,tot,partner]=r;
+    const snapRev=snapHrs*rs,cfhRev=cfhSt*rc,depRev=depSales*dp+depDel*df;
+    const gross=snapRev+cfhRev+depRev,labor=tot*w,contrib=gross-labor;
+    cfhStops+=cfhSt;
+    if(!partner){tg+=gross;tl+=labor;tc+=contrib;}
+    const cc=contrib>=0?'var(--green-tx)':'var(--red-tx)';
+    return `<tr><td><b>${nm}</b>${partner?' <span class="pill p-rd">partner</span>':''}</td><td class="n">${snapRev?money(snapRev):'—'}</td><td class="n">${cfhRev?money(cfhRev):'—'}</td><td class="n">${depRev?money(depRev):'—'}</td><td class="n">${money(gross)}</td><td class="n">${partner?'sub':money(labor)}</td><td class="n" style="color:${partner?'var(--ink3)':cc};font-weight:600">${partner?'partner-run':money(contrib)}</td></tr>`;
+  }).join('');
+  document.getElementById('prof-b').innerHTML=html+`<tr class="tot"><td>Team (ex-partner)</td><td class="n"></td><td class="n"></td><td class="n"></td><td class="n">${money(tg)}</td><td class="n">${money(tl)}</td><td class="n" style="color:var(--green-tx)">${money(tc)}</td></tr>`;
+  document.getElementById('prof-note').innerHTML=`<b>Modeled weekly</b> from the May export (2-wk ÷ 2). Hours are allocated to each project by share of service time; SNAP adds 1 load hr/route/day. Anderson is a subcontracted partner — Depot revenue shown is <b>partner-run</b>, we keep the margin over his rate, so he’s excluded from the team contribution total. Rates above are yours — edit to re-price.`;
+  const cfhGross=cfhStops*rc;
+  document.getElementById('cfh-stops').textContent=Math.round(38);
+  document.getElementById('cfh-gross').textContent=money(38*rc);
+  const twoHire=2*15*w+150*5, oneHire=1*15*w+150*5;
+  document.getElementById('cfh-ab').innerHTML=`<b>Cost to run 2 CFH vans/wk:</b> two new part-timers ≈ ${money(twoHire)} vs. one existing driver + one part-timer ≈ <b>${money(oneHire)}</b> (saves ${money(twoHire-oneHire)}/wk in new wages) — vans at $150/day are in both.`;
+}
+function val(id){return document.getElementById(id).value||0;}
+['p-snap','p-cfh','p-dep','p-fee','p-wage'].forEach(id=>document.getElementById(id).addEventListener('input',prof));
+function renderAll(){renderDays();renderLanes();renderPool();renderRoster();renderCap();renderSplit();prof();recompute();}
 function loadPlan(){clearAll();const s=(k,v)=>assign[k]=v;
   s('snap-t-0','t2001');s('snap-t-1','t2004');s('snap-t-2','t2006');
   s('snap-d-0','dvince');s('snap-d-1','dsham');s('snap-d-2','dpete');

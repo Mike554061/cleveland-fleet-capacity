@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Depot Cleveland — daily sales trends</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css" />
+<style>
+  :root{--bg:#f7f7f4;--card:#fff;--ink:#1c1c1a;--ink2:#5f5e59;--ink3:#8b8a83;--line:#e4e3dc;--line2:#cfcec6;
+    --blue:#2a78d6;--blue-tx:#0c447c;--blue-bg:#e6f1fb;--amber:#eda100;--amber-tx:#633806;--amber-bg:#faeeda;
+    --green-tx:#27500a;--green-bg:#eaf3de;--green-bd:#97c459;--red-tx:#791f1f;--radius:8px}
+  @media (prefers-color-scheme:dark){:root{--bg:#191917;--card:#232320;--ink:#f2f1ea;--ink2:#bdbcb2;--ink3:#8b8a83;--line:#34342f;--line2:#45453f;--blue-tx:#b5d4f4;--blue-bg:#123b5f;--amber-tx:#fac775;--amber-bg:#4a2f0a;--green-tx:#c0dd97;--green-bg:#1f3f13;--green-bd:#3b6d11}}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.5}
+  .wrap{max-width:960px;margin:0 auto;padding:20px 16px 70px}
+  a.back{font-size:13px;color:var(--blue-tx);text-decoration:none}
+  h1{font-size:22px;font-weight:600;margin:10px 0 4px}
+  header p{margin:0;color:var(--ink2);font-size:14px}
+  .stamp{font-size:12px;color:var(--ink3);margin-top:6px}
+  h2{font-size:17px;font-weight:600;margin:30px 0 6px}
+  h2 .sub{font-size:13px;color:var(--ink3);font-weight:400;margin-left:8px}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:16px 0}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px}
+  .kpi .l{font-size:12px;color:var(--ink2)}.kpi .v{font-size:23px;font-weight:600;margin-top:3px}.kpi .s{font-size:11px;color:var(--ink3);margin-top:3px}
+  .callout{background:var(--amber-bg);border:1px solid var(--amber);border-radius:var(--radius);padding:12px 14px;margin:14px 0}
+  .callout h3{margin:0 0 6px;font-size:14px;font-weight:600;color:var(--amber-tx);display:flex;align-items:center;gap:6px}
+  .callout p{margin:0;font-size:13.5px;color:var(--amber-tx)}
+  .chartbox{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-top:8px}
+  .cwrap{position:relative;width:100%}
+  .rev{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-top:8px}
+  .rev-in{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:12px}
+  .rev-in label{font-size:12px;color:var(--ink2);display:block;margin-bottom:4px}
+  .rev-in input{width:100%;font-size:14px;padding:7px 9px;border:1px solid var(--line2);border-radius:var(--radius);background:var(--bg);color:var(--ink)}
+  .note{font-size:12px;color:var(--ink3);margin-top:14px;line-height:1.6}.note b{color:var(--ink2);font-weight:600}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="./"><i class="ti ti-arrow-left"></i> back to capacity board</a>
+  <header>
+    <h1>Depot Cleveland — daily sales trends</h1>
+    <p>Restaurant Depot, Cleveland market · gross order volume by day, weekday pattern, and SupplyNow’s cut.</p>
+    <div class="stamp">Source: Live Order Dash · <code>fact_depot_orders</code> (grand_total, location = Cleveland) · May 4 – Jul 6 2026 · gross order $, not net</div>
+  </header>
+
+  <div class="kpis" id="kpis"></div>
+
+  <div class="callout"><h3><i class="ti ti-calendar-star"></i> The pattern</h3><p id="pattern">Loading…</p></div>
+
+  <h2>Daily gross order volume <span class="sub">bars = daily · line = 7-day average</span></h2>
+  <div class="chartbox"><div class="cwrap" style="height:320px"><canvas id="daily" role="img" aria-label="Daily Restaurant Depot Cleveland gross order volume with 7-day moving average"></canvas></div></div>
+
+  <h2>By day of week <span class="sub">average per day — where the volume lives</span></h2>
+  <div class="chartbox"><div class="cwrap" style="height:260px"><canvas id="dow" role="img" aria-label="Average Cleveland depot sales by day of week"></canvas></div></div>
+
+  <h2>Weekly totals <span class="sub">Mon–Sun</span></h2>
+  <div class="chartbox"><div class="cwrap" style="height:240px"><canvas id="weekly" role="img" aria-label="Weekly Cleveland depot gross totals"></canvas></div></div>
+
+  <h2>SupplyNow revenue on this volume <span class="sub">14% of sales + $50/delivery</span></h2>
+  <div class="rev">
+    <div class="rev-in">
+      <div><label>% of sales</label><input type="number" id="r-pct" value="14" min="0" step="0.5"></div>
+      <div><label>$ per delivery</label><input type="number" id="r-fee" value="50" min="0" step="5"></div>
+    </div>
+    <div class="kpis" id="rev-kpis" style="margin:0"></div>
+    <p class="note" id="rev-note"></p>
+  </div>
+
+  <p class="note" id="note"></p>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const DATA=[
+["2026-05-04",15038.86,12],["2026-05-05",11355.34,10],["2026-05-06",6795.16,8],["2026-05-07",7175.25,7],["2026-05-08",4314.57,2],["2026-05-09",6925.99,6],["2026-05-10",4007.65,5],
+["2026-05-11",28289.03,18],["2026-05-12",5039.70,4],["2026-05-13",6852.31,8],["2026-05-14",3450.30,5],["2026-05-15",3750.11,2],["2026-05-16",4132.55,4],["2026-05-17",7542.16,8],
+["2026-05-18",30256.28,17],["2026-05-19",9063.81,7],["2026-05-20",11047.17,11],["2026-05-21",8554.25,10],["2026-05-22",6381.63,2],["2026-05-23",5611.00,5],["2026-05-24",1426.20,2],
+["2026-05-25",13067.65,12],["2026-05-26",14747.10,10],["2026-05-27",10714.56,13],["2026-05-28",6704.07,4],["2026-05-29",1034.19,1],["2026-05-30",6144.55,4],["2026-05-31",10162.34,7],
+["2026-06-01",18270.25,14],["2026-06-02",8936.42,9],["2026-06-03",6802.43,8],["2026-06-04",7234.79,8],["2026-06-05",0,0],["2026-06-06",6954.29,4],["2026-06-07",14234.17,8],
+["2026-06-08",29558.56,15],["2026-06-09",11163.61,10],["2026-06-10",8489.71,8],["2026-06-11",5772.25,6],["2026-06-12",2868.58,5],["2026-06-13",4142.62,3],["2026-06-14",13640.84,6],
+["2026-06-15",20874.71,13],["2026-06-16",14113.88,14],["2026-06-17",5020.80,7],["2026-06-18",4405.01,6],["2026-06-19",5044.58,3],["2026-06-20",4353.58,3],["2026-06-21",13241.36,12],
+["2026-06-22",17252.00,10],["2026-06-23",14519.63,11],["2026-06-24",5606.98,8],["2026-06-25",5008.40,6],["2026-06-26",1960.32,2],["2026-06-27",3451.72,3],["2026-06-28",13150.31,9],
+["2026-06-29",31264.71,15],["2026-06-30",8704.85,9],["2026-07-01",4520.09,6],["2026-07-02",2733.04,3],["2026-07-03",10866.92,5],["2026-07-04",0,0],["2026-07-05",9335.71,6],["2026-07-06",13004.03,12]
+];
+const DOWN=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const $=id=>document.getElementById(id);
+const usd=n=>'$'+Math.round(n).toLocaleString();
+const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const ink2=css('--ink2'),ink3=css('--ink3'),line=css('--line'),BLUE='#2a78d6',AMBER='#eda100',GREEN='#639922';
+
+const active=DATA.filter(d=>d[2]>0);
+const gross=DATA.reduce((a,d)=>a+d[1],0), orders=DATA.reduce((a,d)=>a+d[2],0);
+const days=active.length;
+$('kpis').innerHTML=[
+ ['Gross order volume',usd(gross),days+' selling days'],
+ ['Orders',orders.toLocaleString(),'avg '+usd(gross/orders)+'/order'],
+ ['Avg / selling day',usd(gross/days),'~'+usd(gross/days*5)+' / 5-day wk'],
+ ['Peak day',usd(Math.max(...DATA.map(d=>d[1]))),'a Monday'],
+].map(k=>`<div class="kpi"><div class="l">${k[0]}</div><div class="v">${k[1]}</div><div class="s">${k[2]}</div></div>`).join('');
+
+// day-of-week averages
+const byd={};DOWN.forEach(d=>byd[d]={s:0,n:0});
+DATA.forEach(d=>{const w=DOWN[new Date(d[0]+'T12:00').getDay()];byd[w].s+=d[1];byd[w].n++;});
+const dowOrder=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+const dowAvg=dowOrder.map(d=>byd[d].n?byd[d].s/byd[d].n:0);
+const monAvg=byd.Mon.s/byd.Mon.n, wkAvg=gross/days;
+$('pattern').innerHTML=`Cleveland depot is a <b>Monday business</b>: Mondays average <b>${usd(monAvg)}</b> — about <b>${(monAvg/wkAvg).toFixed(1)}×</b> a typical day and up to <b>${usd(31264)}</b> at peak. Tue/Wed are the second tier; weekends run light. Volume is a handful of <b>large wholesale orders</b> (avg <b>${usd(gross/orders)}</b>/order), so a single missed Monday moves the whole week.`;
+
+// 7-day moving avg
+const mv=DATA.map((_,i)=>{const s=DATA.slice(Math.max(0,i-6),i+1);return s.reduce((a,d)=>a+d[1],0)/s.length;});
+const labels=DATA.map(d=>d[0].slice(5));
+
+new Chart($('daily'),{data:{labels,datasets:[
+  {type:'bar',label:'Daily gross',data:DATA.map(d=>d[1]),backgroundColor:BLUE+'cc',borderRadius:3,order:2},
+  {type:'line',label:'7-day avg',data:mv,borderColor:css('--ink'),borderWidth:2,pointRadius:0,tension:.3,order:1}
+]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},
+  tooltip:{callbacks:{label:c=>c.dataset.label+': '+usd(c.parsed.y)}}},
+  scales:{x:{ticks:{color:ink3,maxRotation:0,autoSkip:true,maxTicksLimit:12},grid:{display:false}},
+  y:{ticks:{color:ink3,callback:v=>'$'+(v/1000)+'k'},grid:{color:line}}}}});
+
+new Chart($('dow'),{type:'bar',data:{labels:dowOrder,datasets:[{data:dowAvg,
+  backgroundColor:dowOrder.map(d=>d==='Mon'?AMBER:AMBER+'88'),borderRadius:4}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},
+  tooltip:{callbacks:{label:c=>usd(c.parsed.y)+' avg'}}},
+  scales:{x:{ticks:{color:ink2},grid:{display:false}},y:{ticks:{color:ink3,callback:v=>'$'+(v/1000)+'k'},grid:{color:line}}}}});
+
+// weekly totals (week starting Monday)
+const wk={};DATA.forEach(d=>{const dt=new Date(d[0]+'T12:00');const off=(dt.getDay()+6)%7;const mon=new Date(dt);mon.setDate(dt.getDate()-off);const key=mon.toISOString().slice(5,10);wk[key]=(wk[key]||0)+d[1];});
+const wkeys=Object.keys(wk);
+new Chart($('weekly'),{type:'bar',data:{labels:wkeys.map(k=>'wk '+k),datasets:[{data:wkeys.map(k=>wk[k]),backgroundColor:GREEN+'cc',borderRadius:4}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>usd(c.parsed.y)}}},
+  scales:{x:{ticks:{color:ink3},grid:{display:false}},y:{ticks:{color:ink3,callback:v=>'$'+(v/1000)+'k'},grid:{color:line}}}}});
+
+function rev(){const p=(+$('r-pct').value||0)/100,f=+$('r-fee').value||0;
+  const r=gross*p+orders*f, wkr=r/days*5;
+  $('rev-kpis').innerHTML=[
+   ['SupplyNow revenue',usd(r),'over the window'],
+   ['≈ per week',usd(wkr),'at 5 selling days'],
+   ['From % of sales',usd(gross*p),(+$('r-pct').value)+'% of '+usd(gross)],
+   ['From delivery fees',usd(orders*f),orders+' × $'+(+$('r-fee').value)],
+  ].map(k=>`<div class="kpi"><div class="l">${k[0]}</div><div class="v">${k[1]}</div><div class="s">${k[2]}</div></div>`).join('');
+  $('rev-note').innerHTML=`<b>Note:</b> the $/delivery counts every order — the tab mixes Delivery and Pickup, so this slightly over-credits fees. Sales-% side is clean. This is SupplyNow’s take on Cleveland depot volume, separate from the gross order $ the restaurants pay.`;
+}
+['r-pct','r-fee'].forEach(id=>$(id).addEventListener('input',rev));rev();
+
+$('note').innerHTML='<b>Read carefully:</b> the dollars here are <b>gross order volume</b> (grand_total — what restaurants buy through the depot), not SupplyNow revenue. Two dates (Jun 5, Jul 4) had no Cleveland orders and show as $0. Includes Delivery + Pickup. The net/attributed revenue the dash tracks nationally is a different, smaller figure; use the SupplyNow-revenue block above for the number that hits your P&L.';
+</script>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Cleveland availability map — where the free hours are</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css" />
+<style>
+  :root{--bg:#f7f7f4;--card:#fff;--ink:#1c1c1a;--ink2:#5f5e59;--ink3:#8b8a83;--line:#e4e3dc;--line2:#cfcec6;
+    --blue-bg:#e6f1fb;--blue-tx:#0c447c;--green-bg:#eaf3de;--green-tx:#27500a;--green-bd:#97c459;--amber-bg:#faeeda;--amber-tx:#633806;--radius:8px}
+  @media (prefers-color-scheme:dark){:root{--bg:#191917;--card:#232320;--ink:#f2f1ea;--ink2:#bdbcb2;--ink3:#8b8a83;--line:#34342f;--line2:#45453f;--blue-bg:#123b5f;--blue-tx:#b5d4f4;--green-bg:#1f3f13;--green-tx:#c0dd97;--green-bd:#3b6d11;--amber-bg:#4a2f0a;--amber-tx:#fac775}}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.5}
+  .wrap{max-width:960px;margin:0 auto;padding:20px 16px 70px}
+  a.back{font-size:13px;color:var(--blue-tx);text-decoration:none}
+  h1{font-size:22px;font-weight:600;margin:10px 0 4px}
+  header p{margin:0;color:var(--ink2);font-size:14px}
+  .stamp{font-size:12px;color:var(--ink3);margin-top:6px}
+  h2{font-size:17px;font-weight:600;margin:28px 0 6px}
+  h2 .sub{font-size:13px;color:var(--ink3);font-weight:400;margin-left:8px}
+  .callout{background:var(--green-bg);border:1px solid var(--green-bd);border-radius:var(--radius);padding:12px 14px;margin:14px 0}
+  .callout h3{margin:0 0 6px;font-size:14px;font-weight:600;color:var(--green-tx);display:flex;align-items:center;gap:6px}
+  .callout p{margin:0;font-size:13.5px;color:var(--green-tx)}
+  .gridwrap{overflow-x:auto;margin-top:8px;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+  table.grid{border-collapse:collapse;font-size:11px;min-width:760px;width:100%}
+  table.grid th,table.grid td{padding:0;text-align:center}
+  table.grid .rowh{text-align:left;padding:6px 10px;font-weight:600;font-size:12.5px;white-space:nowrap;position:sticky;left:0;background:var(--card);z-index:1}
+  table.grid .colh{font-size:9.5px;color:var(--ink3);height:28px;vertical-align:bottom;padding-bottom:3px;font-weight:400}
+  table.grid td.cell{width:24px;height:26px;border:1px solid var(--bg)}
+  table.grid .free-col{text-align:left;padding:6px 10px;font-weight:600;font-size:12px;color:var(--green-tx);white-space:nowrap}
+  .lg{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--ink2);margin:10px 0 0;align-items:center}
+  .lg span{display:flex;align-items:center;gap:5px}
+  .sw{width:13px;height:13px;border-radius:3px;display:inline-block}
+  #map{height:460px;border-radius:12px;margin-top:8px;border:1px solid var(--line)}
+  .dlg{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--ink2);margin:10px 0 0}
+  .dot{width:11px;height:11px;border-radius:50%;display:inline-block;margin-right:5px;vertical-align:-1px}
+  .note{font-size:12px;color:var(--ink3);margin-top:14px;line-height:1.6}.note b{color:var(--ink2);font-weight:600}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:8px}
+  .kc{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:11px 13px}
+  .kc .l{font-size:12px;color:var(--ink2)}.kc .v{font-size:20px;font-weight:600;margin-top:3px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="./"><i class="ti ti-arrow-left"></i> back to capacity board</a>
+  <header>
+    <h1>Where the free hours are</h1>
+    <p>Cleveland availability — committed time vs. open capacity across the week, and the zones where that capacity sits.</p>
+    <div class="stamp">SupplyNow · from May 4–15 2026 routing · SNAP is fixed done-by-9:00; the bands past 9:00 are the Depot/CFH/Akron tail</div>
+  </header>
+
+  <div class="callout"><h3><i class="ti ti-bulb"></i> The prospecting read</h3>
+    <p id="read">Loading…</p></div>
+
+  <div class="cards" id="cards"></div>
+
+  <h2>Committed vs. open <span class="sub">green = open · blue = on-route (darker = every day)</span></h2>
+  <div class="gridwrap"><table class="grid" id="grid"></table></div>
+  <div class="lg">
+    <span><span class="sw" style="background:var(--green-bd)"></span>open</span>
+    <span><span class="sw" style="background:#b5d4f4"></span>some days</span>
+    <span><span class="sw" style="background:#185fa5"></span>every day on-route</span>
+    <span style="color:var(--ink3)">columns = 30-min blocks, 4:30a → 6:00p</span>
+  </div>
+
+  <h2>Afternoon operating zones <span class="sub">where each driver already is post-9:00 — a prospect near a cluster is cheap to add</span></h2>
+  <div id="map"></div>
+  <div class="dlg" id="dlg"></div>
+
+  <p class="note" id="note"></p>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const COLOR={Vince:'#2a78d6',Pete:'#1baf7a',Shameria:'#eda100',Christine:'#4a3aa7',Anderson:'#888780',Ray:'#e34948',Landon:'#e87ba4'};
+fetch('./avail.json?v=1').then(r=>r.json()).then(D=>{
+  const bins=D.bins,drivers=Object.keys(D.busy);
+  const g=document.getElementById('grid');
+  let head='<tr><th class="rowh">Driver</th>'+bins.map((b,i)=>`<th class="colh">${i%2===0?b:''}</th>`).join('')+'<th class="free-col">frees up</th></tr>';
+  const shade=f=>{ if(f<0.15)return 'var(--green-bg)'; const t=Math.min(1,f);
+    const lerp=(a,b)=>Math.round(a+(b-a)*t); return `rgb(${lerp(181,24)},${lerp(212,95)},${lerp(244,165)})`; };
+  let body=drivers.map(d=>{
+    const cells=D.busy[d].map(f=>`<td class="cell" title="${Math.round(f*100)}% of days" style="background:${shade(f)}"></td>`).join('');
+    return `<tr><td class="rowh"><span class="dot" style="background:${COLOR[d]}"></span>${d}</td>${cells}<td class="free-col">${D.free[d]||'—'}</td></tr>`;
+  }).join('');
+  g.innerHTML=head+body;
+
+  // cards: count drivers open by ~noon, total open afternoon hours (rough)
+  const opensBy=t=>drivers.filter(d=>{const idx=bins.indexOf(t);return idx>=0 && D.busy[d].slice(idx).every(f=>f<0.35);}).length;
+  document.getElementById('cards').innerHTML=[
+    ['SNAP-side drivers','3','Vince · Pete · Shameria'],
+    ['Open by ~12:00p',String(opensBy('12:00p')),'ready for an afternoon route'],
+    ['Locked to afternoon','2','Anderson (Depot) · Christine (Akron)'],
+  ].map(c=>`<div class="kc"><div class="l">${c[0]}</div><div class="v">${c[1]}</div><div class="l" style="margin-top:2px">${c[2]}</div></div>`).join('');
+
+  document.getElementById('read').innerHTML=
+    'Your open capacity is a <b>midday-onward block</b>: Pete frees ~'+D.free.Pete+', Shameria ~'+D.free.Shameria+', Vince ~'+D.free.Vince+
+    '. That’s three mobilized drivers with trucks looking for afternoon work — the profile of the next anchor customer is <b>delivery after ~noon</b>, ideally near where they already finish (map below). Anderson and Christine are committed into the afternoon and aren’t the ones to build on.';
+
+  // map
+  const map=L.map('map',{scrollWheelZoom:false}).setView([41.44,-81.66],10);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'© OpenStreetMap'}).addTo(map);
+  const seen={};
+  D.geo.forEach(p=>{const[la,ln,d]=p;seen[d]=1;
+    L.circleMarker([la,ln],{radius:5,color:COLOR[d]||'#888',weight:1,fillColor:COLOR[d]||'#888',fillOpacity:.7}).addTo(map).bindPopup(d);});
+  L.marker([41.4926,-81.6321]).addTo(map).bindPopup('Cleveland depot — 2275 E 55th St');
+  document.getElementById('dlg').innerHTML=Object.keys(seen).map(d=>`<span><span class="dot" style="background:${COLOR[d]}"></span>${d}</span>`).join('');
+  document.getElementById('note').innerHTML='<b>How to use:</b> when a prospect comes in, drop their location against these clusters — a stop inside a driver’s afternoon zone during their open window is an efficiency-insert (added miles only); a stop far outside is a new route. That’s the same logic as the SNAP planner, applied to the whole Cleveland book. <b>Basis:</b> post-9:00 committed stops, May 4–15; darker grid = on-route a larger share of days.';
+}).catch(e=>{document.getElementById('read').textContent='Could not load avail.json — '+e;});
+</script>
+</body>
+</html>
